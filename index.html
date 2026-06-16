@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Gastos Domésticos</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/icons/money-bag.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- API Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- ===== LAYOUT PRINCIPAL ===== -->
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo Section -->
+        <header class="sidebar__logo">
+            <span class="sidebar__logo-icon">💰</span>
+            <div class="sidebar__logo-text">
+                <div class="sidebar__title">Controle de Gastos</div>
+                <div class="sidebar__subtitle">Domésticos (CGD)</div>
+            </div>
+        </header>
+
+        <!-- Theme Toggle -->
+        <section class="sidebar__theme-toggle">
+            <div class="theme-toggle__container" id="themeToggle" onclick="toggleTheme()">
+                <div class="theme-toggle__slider"></div>
+            </div>
+            <span class="theme-toggle__text" id="modeText">☀️ Modo Claro</span>
+        </section>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar__nav">
+            <!-- Notification Section -->
+            <section class="nav__section">
+                <h3 class="nav__section-title">NOTIFICAÇÕES</h3>
+                <ul class="nav__menu">
+                    <li id="notification-item" class="nav__item">
+                        <div class="nav__alert-line1">
+                            <span class="nav__icon">⚠️</span>
+                            <span class="nav__text">Aviso</span>
+                        </div>
+                        <div class="nav__alert-line2">
+                            <!-- Mensagem aparecerá aqui via JS -->
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section class="nav__section">
+                <h3 class="nav__section-title">DASHBOARD</h3>
+                <ul class="nav__menu">
+                    <li class="nav__item nav__item--active" data-page="dashboard-page"
+                        onclick="navigateTo('dashboard-page')">
+                        <span class="nav__icon">📊</span>
+                        <span class="nav__text">Visão Geral</span>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Expenses Section -->
+            <section class="nav__section">
+                <h3 class="nav__section-title">DESPESAS</h3>
+                <ul class="nav__menu">
+                    <li class="nav__item" onclick="showModal('add-modal')">
+                        <span class="nav__icon">➕</span>
+                        <span class="nav__text">Adicionar</span>
+                    </li>
+                    <li class="nav__item" data-page="edit-page" onclick="navigateTo('edit-page')">
+                        <span class="nav__icon">✏️</span>
+                        <span class="nav__text">Editar/Remover</span>
+                    </li>
+                    <li class="nav__item" data-page="payment-page" onclick="navigateTo('payment-page')">
+                        <span class="nav__icon">💵</span>
+                        <span class="nav__text">Pagar/Atualizar</span>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Backup Section -->
+            <section class="nav__section">
+                <h3 class="nav__section-title">BACKUP</h3>
+                <ul class="nav__menu">
+                    <li class="nav__item" data-page="backup-page" onclick="navigateTo('backup-page')">
+                        <span class="nav__icon">💾</span>
+                        <span class="nav__text">Exportar/Importar</span>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Repor Section -->
+            <!--
+            <section class="nav__section">
+                <h3 class="nav__section-title">Relatórios</h3>
+                <ul class="nav__menu">
+                    <li class="nav__item" data-page="report-page" onclick="navigateTo('report-page')">
+                        <span class="nav__icon">📋</span>
+                        <span class="nav__text">Relatórios</span>
+                    </li>
+                </ul>
+            </section>
+            -->
+
+            <!-- Program Section -->
+            <section class="nav__section">
+                <h3 class="nav__section-title">PROGRAMA</h3>
+                <ul class="nav__menu">
+                    <li class="nav__item" data-page="info-page" onclick="navigateTo('info-page')">
+                        <span class="nav__icon">ℹ️</span>
+                        <span class="nav__text">Sobre o App</span>
+                    </li>
+                    <li class="nav__item" onclick="showModal('exit-modal')">
+                        <span class="nav__icon">🚪</span>
+                        <span class="nav__text">Sair</span>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+
+        <!-- ===== PÁGINAS ===== -->
+        <!-- Page: Visão Geral das Despesas -->
+        <section id="dashboard-page" class="page page--active">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">📊</span>
+                    Visão Geral das Despesas
+                </h1>
+                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                    ➕ Adicionar Despesa
+                </button>
+            </header>
+
+            <!-- Date Filters -->
+            <section class="date-selector">
+                <div class="date-selector__group">
+                    <label for="monthSelect" class="date-selector__label">MÊS:</label>
+                    <select id="monthSelect" class="date-selector__input" onchange="updateDateFilter()">
+                        <!-- Selecionar por padrão o mês atual obtido pelo sistema operacional -->
+                        <option>Janeiro</option>
+                        <option>Fevereiro</option>
+                        <option>Março</option>
+                        <option>Abril</option>
+                        <option>Maio</option>
+                        <option>Junho</option>
+                        <option>Julho</option>
+                        <option>Agosto</option>
+                        <option>Setembro</option>
+                        <option>Outubro</option>
+                        <option>Novembro</option>
+                        <option>Dezembro</option>
+                    </select>
+                </div>
+                <div class="date-selector__group">
+                    <label for="yearSelect" class="date-selector__label">ANO:</label>
+                    <select id="yearSelect" class="date-selector__input" onchange="updateDateFilter()">
+                        <!-- Selecionar por padrão o ano atual obtido pelo sistema operacional -->
+                        <!-- Popular com anos dos registros do database JSON -->
+                    </select>
+                </div>
+            </section>
+
+            <!-- Dashboard Charts Top -->
+            <section class="dashboard-charts-top">
+                <div class="chart chart--line">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Evolução das Despesas Mensais ()</h3>
+                    </header>
+                    <div id="chartByMonthlyTrendContainer" class="chart__body">
+                        <!-- Desenhar automaticamente com base nos registros do database JSON -->
+                        <canvas id="chartMonthlyTrend"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart chart--doughnut">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Distribuição por Categoria de Despesa ()</h3>
+                    </header>
+                    <div id="chartByCategoryContainer" class="chart__body">
+                        <!-- Desenhar automaticamente com base nos registros do database JSON -->
+                        <canvas id="chartByCategory"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart chart--status">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Situação de Pagamentos de Despesas ()</h3>
+                    </header>
+                    <div id="chartByStatusContainer" class="chart__body">
+                        <!-- Desenhar automaticamente com base nos registros do database JSON -->
+                        <canvas id="chartByStatus"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Charts Bottom -->
+            <section class="dashboard-charts-bottom">
+                <div class="chart chart--column">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Despesas por Responsável ()</h3>
+                    </header>
+                    <div id="chartByResponsibleContainer" class="chart__body">
+                        <!-- Desenhar automaticamente com base nos registros do database JSON -->
+                        <canvas id="chartByResponsible"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart chart--top5">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Top 5 — Maiores Despesas ()</h3>
+                    </header>
+                    <div id="chartTop5Container" class="chart__body">
+                        <!-- Ranqueia automaticamente com base nos registros do database JSON -->
+                        <div id="top5Body" style="padding: 4px 0; display: flex; flex-direction: column; gap: 12px;">
+                        </div>
+                        <div
+                            style="padding: 10px 0 2px; border-top: 1px solid var(--color-light-gray); display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                            <span
+                                style="font-size: 12px; color: var(--color-dark-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;">Total
+                                do Top 5</span>
+                            <span id="top5Total"
+                                style="font-size: 14px; font-weight: 700; color: var(--color-primary);">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart chart--calendar">
+                    <header class="chart__header">
+                        <h3 class="chart__title">Calendário de Vencimentos ()</h3>
+                    </header>
+                    <div id="chartCalendarContainer" class="chart__body" style="padding:12px;">
+                        <div id="calendarGrid"></div>
+                        <div class="legend"
+                            style="display:flex; gap:16px; padding:10px 0 2px; border-top:1px solid var(--color-light-gray); justify-content:center; margin-top:8px;">
+                            <div
+                                style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                                <div
+                                    style="width:10px; height:10px; border-radius:50%; background:var(--color-success);">
+                                </div>Pago
+                            </div>
+                            <div
+                                style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                                <div
+                                    style="width:10px; height:10px; border-radius:50%; background:var(--color-warning);">
+                                </div>Aberto
+                            </div>
+                            <div
+                                style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                                <div
+                                    style="width:10px; height:10px; border-radius:50%; background:var(--color-danger);">
+                                </div>Vencido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summary Cards -->
+            <section class="summary">
+                <div class="summary__card summary__card--blue">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="totalMonthValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL DO MÊS</div>
+                </div>
+                <div class="summary__card summary__card--green">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="paidValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL PAGO</div>
+                </div>
+                <div class="summary__card summary__card--orange">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="openValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL EM ABERTO</div>
+                </div>
+                <div class="summary__card summary__card--red">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="overdueValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL EM ATRASO</div>
+                </div>
+            </section>
+
+            <!-- Data Filters -->
+            <section class="filters">
+                <div class="filters__group">
+                    <label for="categoryFilter" class="filters__label">CATEGORIA</label>
+                    <select id="categoryFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                        <!-- Selecionar por padrão 'Todas' -->
+                        <option>Todas</option>
+                        <option>Aluguel</option>
+                        <option>Condomínio</option>
+                        <option>Serviços</option>
+                        <option>Impostos</option>
+                        <option>Seguro</option>
+                        <option>Compras</option>
+                        <option>Empréstimo</option>
+                        <option>Financiamento</option>
+                        <option>Consórcio</option>
+                        <option>Outra</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="statusFilter" class="filters__label">STATUS</label>
+                    <select id="statusFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                        <!-- Selecionar por padrão o 'Todas' -->
+                        <!-- Definir automaticamente com base nos registros do database JSON -->
+                        <option>Todos</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="responsibleFilter" class="filters__label">RESPONSÁVEL</label>
+                    <select id="responsibleFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                        <!-- Selecionar por padrão o 'Todos' -->
+                        <!-- Popular com responsáveis dos registros do database JSON -->
+                        <option>Todos</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="sortFilter" class="filters__label">ORDENAR POR</label>
+                    <select id="sortFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                        <!-- Selecionar por padrão o 'Vencimento' -->
+                        <option>Vencimento</option>
+                        <option>Valor</option>
+                        <option>Status</option>
+                        <option>Descrição</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="paymentMethodFilter" class="filters__label">FORMA DE PAGAMENTO</label>
+                    <select id="paymentMethodFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                        <option value="Todos">Todos</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Cartão (débito)">Cartão (débito)</option>
+                        <option value="Cartão (crédito)">Cartão (crédito)</option>
+                        <option value="PIX (débito)">PIX (débito)</option>
+                        <option value="PIX (crédito)">PIX (crédito)</option>
+                        <option value="Débito automático">Débito automático</option>
+                    </select>
+                </div>
+                <button class="btn btn--secondary" onclick="clearFilters('dashboard')">Limpar Filtros</button>
+            </section>
+
+            <!-- Data Table -->
+            <section class="data-table">
+                <table class="table" id="expensesTable">
+                    <thead class="table__header">
+                        <tr class="table__row">
+                            <th class="table__cell table__cell--header">DESCRIÇÃO</th>
+                            <th class="table__cell table__cell--header">CATEGORIA</th>
+                            <th class="table__cell table__cell--header">RESPONSÁVEL</th>
+                            <th class="table__cell table__cell--header">PARCELAS</th>
+                            <th class="table__cell table__cell--header">VALOR (R$)</th>
+                            <th class="table__cell table__cell--header">FORMA DE PAGAMENTO</th>
+                            <th class="table__cell table__cell--header">VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">STATUS</th>
+                            <th class="table__cell table__cell--header">NOVO VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body" id="expensesTableBody">
+                        <!-- Popular com despesas dos registros do database JSON -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Page: Editar/Remover Despesas -->
+        <section id="edit-page" class="page">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">📝</span>
+                    Editar/Remover Despesa
+                </h1>
+                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                    ➕ Adicionar Despesa
+                </button>
+            </header>
+
+            <!-- Date Filters -->
+            <section class="date-selector">
+                <div class="date-selector__group">
+                    <label for="editMonthSelect" class="date-selector__label">MÊS:</label>
+                    <select id="editMonthSelect" class="date-selector__input" onchange="applyPageFilters('edit')">
+                        <!-- Selecionar por padrão o 'Todos os meses' -->
+                        <option>Todos os meses</option>
+                        <option>Janeiro</option>
+                        <option>Fevereiro</option>
+                        <option>Março</option>
+                        <option>Abril</option>
+                        <option>Maio</option>
+                        <option>Junho</option>
+                        <option>Julho</option>
+                        <option>Agosto</option>
+                        <option>Setembro</option>
+                        <option>Outubro</option>
+                        <option>Novembro</option>
+                        <option>Dezembro</option>
+                    </select>
+                </div>
+                <div class="date-selector__group">
+                    <label for="editYearSelect" class="date-selector__label">ANO:</label>
+                    <select id="editYearSelect" class="date-selector__input" onchange="applyPageFilters('edit')">
+                        <option>Todos os anos</option>
+                        <!-- Selecionar por padrão o 'Todos os anos' -->
+                        <!-- Popular com anos dos registros do database JSON -->
+                    </select>
+                </div>
+            </section>
+
+            <!-- Summary Cards -->
+            <section class="summary">
+                <div class="summary__card summary__card--blue">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="totalFilteredValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL FILTRADO</div>
+                </div>
+                <div class="summary__card summary__card--gray">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="itemsFoundValue">0</div>
+                    <div class="summary__label">DESPESAS ENCONTRADAS</div>
+                </div>
+                <div class="summary__card summary__card--green">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="paidItemsValue">0</div>
+                    <div class="summary__label">DESPESAS PAGAS</div>
+                </div>
+                <div class="summary__card summary__card--red">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="openItemsValue">0</div>
+                    <div class="summary__label">DESPESAS PENDENTES</div>
+                </div>
+            </section>
+
+            <!-- Filters -->
+            <section class="filters">
+                <div class="filters__group">
+                    <label for="editCategoryFilter" class="filters__label">CATEGORIA</label>
+                    <select id="editCategoryFilter" class="filters__input" onchange="applyPageFilters('edit')"">
+                        <!-- Selecionar por padrão 'Todas' -->
+                        <option>Todas</option>
+                        <option>Aluguel</option>
+                        <option>Condomínio</option>
+                        <option>Serviços</option>
+                        <option>Impostos</option>
+                        <option>Seguro</option>
+                        <option>Compras</option>
+                        <option>Empréstimo</option>
+                        <option>Financiamento</option>
+                        <option>Consórcio</option>
+                        <option>Outra</option>
+                    </select>
+                </div>
+                <div class=" filters__group">
+                        <label for="editStatusFilter" class="filters__label">STATUS</label>
+                        <select id="editStatusFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                            <!-- Selecionar por padrão o 'Todas' -->
+                            <!-- Definir automaticamente com base nos registros do database JSON -->
+                            <option>Todas</option>
+                        </select>
+                </div>
+                <div class="filters__group">
+                    <label for="editResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
+                    <select id="editResponsibleFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                        <!-- Selecionar por padrão o 'Todos' -->
+                        <!-- Popular com responsáveis dos registros do database JSON -->
+                        <option>Todos</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="editSortFilter" class="filters__label">ORDENAR POR</label>
+                    <select id="editSortFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                        <!-- Selecionar por padrão o 'Vencimento' -->
+                        <option>Vencimento</option>
+                        <option>Valor</option>
+                        <option>Status</option>
+                        <option>Descrição</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="editPaymentMethodFilter" class="filters__label">FORMA DE PAGAMENTO</label>
+                    <select id="editPaymentMethodFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                        <option value="Todos">Todos</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Cartão (débito)">Cartão (débito)</option>
+                        <option value="Cartão (crédito)">Cartão (crédito)</option>
+                        <option value="PIX (débito)">PIX (débito)</option>
+                        <option value="PIX (crédito)">PIX (crédito)</option>
+                        <option value="Débito automático">Débito automático</option>
+                    </select>
+                </div>
+                <div class="search__container">
+                    <span class="search__icon">🔍</span>
+                    <input type="text" class="search__input" id="searchEditInput"
+                        placeholder="Digite para buscar por descrição, categoria ou valor..."
+                        oninput="performSearch('edit')">
+                </div>
+                <button class="btn btn--secondary" onclick="clearFilters('edit')">Limpar Filtros</button>
+            </section>
+
+            <!-- Data Table -->
+            <section class="data-table">
+                <table class="table" id="editExpensesTable">
+                    <thead class="table__header">
+                        <tr class="table__row">
+                            <th class="table__cell table__cell--header">DESCRIÇÃO</th>
+                            <th class="table__cell table__cell--header">CATEGORIA</th>
+                            <th class="table__cell table__cell--header">RESPONSÁVEL</th>
+                            <th class="table__cell table__cell--header">PARCELAS</th>
+                            <th class="table__cell table__cell--header">VALOR (R$)</th>
+                            <th class="table__cell table__cell--header">FORMA DE PAGAMENTO</th>
+                            <th class="table__cell table__cell--header">VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">STATUS</th>
+                            <th class="table__cell table__cell--header">NOVO VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body" id="editExpensesTableBody">
+                        <!-- Data populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Page: Pagar/Atualizar Despesas -->
+        <section id="payment-page" class="page">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">💵</span>
+                    Pagar/Atualizar Despesa
+                </h1>
+                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                    ➕ Adicionar Despesa
+                </button>
+            </header>
+
+            <!-- Date Filters -->
+            <section class="date-selector">
+                <div class="date-selector__group">
+                    <label for="pendingMonthSelect" class="date-selector__label">MÊS:</label>
+                    <select id="pendingMonthSelect" class="date-selector__input" onchange="applyPageFilters('pending')">
+                        <!-- Selecionar por padrão o 'Todos os meses' -->
+                        <option>Todos os meses</option>
+                        <option>Janeiro</option>
+                        <option>Fevereiro</option>
+                        <option>Março</option>
+                        <option>Abril</option>
+                        <option>Maio</option>
+                        <option>Junho</option>
+                        <option>Julho</option>
+                        <option>Agosto</option>
+                        <option>Setembro</option>
+                        <option>Outubro</option>
+                        <option>Novembro</option>
+                        <option>Dezembro</option>
+                    </select>
+                </div>
+                <div class="date-selector__group">
+                    <label for="pendingYearSelect" class="date-selector__label">ANO:</label>
+                    <select id="pendingYearSelect" class="date-selector__input" onchange="applyPageFilters('pending')">
+                        <option>Todos os anos</option>
+                        <!-- Selecionar por padrão o 'Todos os anos' -->
+                        <!-- Popular com anos dos registros do database JSON -->
+                    </select>
+                </div>
+            </section>
+
+            <!-- Summary Cards -->
+            <section class="summary">
+                <!--
+                <div class="summary__card summary__card--blue">
+                     Calcular automaticamente com base nos registros do database JSON 
+                    <div class="summary__value" id="totalOutstandingValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL PENDENTE</div>
+                </div>
+                -->
+                <div class="summary__card summary__card--green">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="openItemsCount">0</div>
+                    <div class="summary__label">DESPESAS EM ABERTO</div>
+                </div>
+                <div class="summary__card summary__card--purple">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="overdueItemsCount">0</div>
+                    <div class="summary__label">DESPESAS EM ATRASO</div>
+                </div>
+                <div class="summary__card summary__card--orange">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="totalOpenValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL EM ABERTO</div>
+                </div>
+                <div class="summary__card summary__card--red">
+                    <!-- Calcular automaticamente com base nos registros do database JSON -->
+                    <div class="summary__value" id="totalOverdueValue">R$ 0,00</div>
+                    <div class="summary__label">TOTAL EM ATRASO</div>
+                </div>
+            </section>
+
+            <!-- Filters -->
+            <section class="filters">
+                <div class="filters__group">
+                    <label for="pendingCategoryFilter" class="filters__label">CATEGORIA</label>
+                    <select id="pendingCategoryFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                        <!-- Selecionar por padrão 'Todas' -->
+                        <option>Todas</option>
+                        <option>Aluguel</option>
+                        <option>Condomínio</option>
+                        <option>Serviços</option>
+                        <option>Impostos</option>
+                        <option>Seguro</option>
+                        <option>Compras</option>
+                        <option>Empréstimo</option>
+                        <option>Financiamento</option>
+                        <option>Consórcio</option>
+                        <option>Outra</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="pendingStatusFilter" class="filters__label">STATUS</label>
+                    <select id="pendingStatusFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                        <!-- Selecionar por padrão o 'Todas pendentes' -->
+                        <!-- Definir automaticamente com base nos registros do database JSON -->
+                        <option>Todas pendentes</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="pendingResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
+                    <select id="pendingResponsibleFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                        <!-- Popular com responsáveis dos registros do database JSON -->
+                        <option>Todos</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="pendingSortFilter" class="filters__label">ORDENAR POR</label>
+                    <select id="pendingSortFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                        <!-- Selecionar por padrão o 'Vencimento' -->
+                        <option>Vencimento</option>
+                        <option>Valor</option>
+                        <option>Status</option>
+                        <option>Descrição</option>
+                    </select>
+                </div>
+                <div class="search__container">
+                    <span class="search__icon">🔍</span>
+                    <input type="text" class="search__input" id="searchPendingInput"
+                        placeholder="Digite para buscar por descrição, categoria ou valor..."
+                        oninput="performSearch('pending')">
+                </div>
+                <button class="btn btn--secondary" onclick="clearFilters('pending')">Limpar Filtros</button>
+            </section>
+
+            <!-- Data Table -->
+            <section class="data-table">
+                <table class="table" id="pendingExpensesTable">
+                    <thead class="table__header">
+                        <tr class="table__row">
+                            <th class="table__cell table__cell--header">DESCRIÇÃO</th>
+                            <th class="table__cell table__cell--header">CATEGORIA</th>
+                            <th class="table__cell table__cell--header">RESPONSÁVEL</th>
+                            <th class="table__cell table__cell--header">PARCELAS</th>
+                            <th class="table__cell table__cell--header">VALOR (R$)</th>
+                            <th class="table__cell table__cell--header">DIAS EM ATRASO</th>
+                            <th class="table__cell table__cell--header">VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">STATUS</th>
+                            <th class="table__cell table__cell--header">NOVO VENCIMENTO</th>
+                            <th class="table__cell table__cell--header">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body" id="pendingExpensesTableBody">
+                        <!-- Data populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Page: Exportar/Importar Dados -->
+        <section id="backup-page" class="page">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">💾</span>
+                    Exportar/Importar Dados
+                </h1>
+                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                    📊 Voltar ao Dashboard
+                </button>
+            </header>
+
+            <!-- Informações Gerais -->
+            <section class="info-card">
+                <header class="info-card__header">
+                    <span class="info-card__icon">💡</span>
+                    <h3 class="info-card__title">Backup de Dados</h3>
+                </header>
+                <div class="info-card__content">
+                    <p>Mantenha seus dados seguros fazendo backups regulares. Você pode exportar seus dados em
+                        diferentes formatos e importá-los quando necessário.</p>
+                    <br>
+                    <strong>Formatos disponíveis:</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li><strong>JSON:</strong> Backup completo com toda a estrutura de dados (recomendado)</li>
+                        <li><strong>CSV:</strong> Formato compatível com planilhas como Excel e Google Sheets</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Estatísticas dos Dados -->
+            <section class="summary">
+                <div class="summary__card summary__card--blue">
+                    <div class="summary__value" id="totalValueSum">R$ 0,00</div>
+                    <div class="summary__label">Valor Total</div>
+                </div>
+                <div class="summary__card summary__card--gray">
+                    <div class="summary__value" id="totalExpensesCount">0</div>
+                    <div class="summary__label">Total de Despesas</div>
+                </div>
+                <div class="summary__card summary__card--green">
+                    <div class="summary__value" id="totalPaidCount">0</div>
+                    <div class="summary__label">Despesas Pagas</div>
+                </div>
+                <div class="summary__card summary__card--orange">
+                    <div class="summary__value" id="totalOpenCount">0</div>
+                    <div class="summary__label">Despesas Pendentes</div>
+                </div>
+            </section>
+
+            <!-- Seções de Backup -->
+            <section class="backup-sections">
+                <!-- Seção de Exportação -->
+                <div class="backup-section backup-section--export">
+                    <header class="backup-section__header">
+                        <span class="backup-section__icon">📤</span>
+                        <h2 class="backup-section__title">Exportar Dados</h2>
+                    </header>
+
+                    <p class="backup-section__description">
+                        Faça o download de seus dados em diferentes formatos para backup ou análise externa.
+                    </p>
+
+                    <form class="form" id="exportForm">
+                        <!-- Formato de Exportação -->
+                        <div class="form__group">
+                            <label class="form__label">Formato de Exportação</label>
+                            <div class="format-options">
+                                <div class="format-option selected" data-format="json"
+                                    onclick="selectFormat('export', 'json')">
+                                    <div class="format-option__icon">📄</div>
+                                    <div class="format-option__name">JSON</div>
+                                    <div class="format-option__description">Backup completo</div>
+                                </div>
+                                <div class="format-option" data-format="csv" onclick="selectExportFormat('csv')">
+                                    <div class="format-option__icon">📊</div>
+                                    <div class="format-option__name">CSV</div>
+                                    <div class="format-option__description">Para planilhas</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Local de Salvamento -->
+                        <div class="form__group">
+                            <!-- <label for="exportPath" class="form__label">Local de Salvamento</label> -->
+                            <!-- Criar pasta padrão de salvamento de backup se não existir -->
+                            <!-- <input type="text" id="exportPath" name="exportPath" class="form__input"
+                                value="C:\Users\[nome do usuário]]\Documents\CGD\backups"
+                                placeholder="Escolha onde salvar o arquivo...">
+                            <button type="button" class="btn btn--secondary" onclick="chooseExportPath()"
+                                style="margin-top: 8px;">
+                                📁 Escolher Pasta
+                            </button> -->
+                        </div>
+
+                        <!-- Nome do Arquivo -->
+                        <div class="form__group">
+                            <label for="exportFileName" class="form__label">Nome do Arquivo</label>
+                            <!-- Por padrão definir nome do arquivo para "cgd-backup-yyyy_MM_dd-HH_mm_ss.[extensão]" -->
+                            <input type="text" id="exportFileName" name="exportFileName" class="form__input"
+                                value="cgd-backup-2025_08_21-22_08_27.json"
+                                placeholder="Nome do arquivo (sem extensão)">
+                        </div>
+
+                        <!-- Botão de Exportação -->
+                        <button type="button" class="btn btn--backup" onclick="performExport()">
+                            📤 Exportar Dados
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Seção de Importação -->
+                <div class="backup-section backup-section--import">
+                    <header class="backup-section__header">
+                        <span class="backup-section__icon">📥</span>
+                        <h2 class="backup-section__title">Importar Dados</h2>
+                    </header>
+
+                    <p class="backup-section__description">
+                        Restaure seus dados a partir de um arquivo de backup JSON ou CSV.
+                    </p>
+
+                    <form class="form" id="importForm">
+                        <!-- Formato de Importação -->
+                        <div class="form__group">
+                            <label class="form__label">Formato de Importação</label>
+                            <div class="format-options">
+                                <div class="format-option selected" data-format="json"
+                                    onclick="selectFormat('import', 'json')">
+                                    <div class="format-option__icon">📄</div>
+                                    <div class="format-option__name">JSON</div>
+                                    <div class="format-option__description">Backup completo</div>
+                                </div>
+                                <!--
+                                <div class="format-option" data-format="csv" onclick="selectFormat('import', 'csv')">
+                                    <div class="format-option__icon">📊</div>
+                                    <div class="format-option__name">CSV</div>
+                                    <div class="format-option__description">Dados de planilha</div>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+
+                        <!-- Seleção do Arquivo -->
+                        <div class="form__group">
+                            <label for="importFile" class="form__label">Selecionar Arquivo</label>
+                            <input type="file" id="importFile" name="importFile" class="form__input form__input--file"
+                                accept=".json,.csv" onchange="validateImportFile()">
+                        </div>
+
+                        <!-- Opções de Importação -->
+                        <div class="form__group">
+                            <label class="form__label">Modo de Importação</label>
+                            <div class="format-options">
+                                <div class="format-option selected" data-mode="replace"
+                                    onclick="selectImportMode('replace')">
+                                    <div class="format-option__icon">🔄</div>
+                                    <div class="format-option__name">Substituir</div>
+                                    <div class="format-option__description">Apagar dados atuais</div>
+                                </div>
+                                <div class="format-option" data-mode="merge" onclick="selectImportMode('merge')">
+                                    <div class="format-option__icon">➕</div>
+                                    <div class="format-option__name">Mesclar</div>
+                                    <div class="format-option__description">Adicionar aos dados</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aviso de Importação -->
+                        <div class="warning-card">
+                            <header class="warning-card__header">
+                                <span class="warning-card__icon">⚠️</span>
+                                <span class="warning-card__title">Atenção:</span>
+                            </header>
+                            <div class="warning-card__content">
+                                No modo "Substituir", todos os dados atuais serão perdidos. Certifique-se de fazer um
+                                backup antes de continuar.
+                            </div>
+                        </div>
+
+                        <!-- Botão de Importação -->
+                        <button type="button" class="btn btn--restore" onclick="showModal('restore-modal')">
+                            📥 Importar Dados
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </section>
+
+        <!-- Page: Relatórios -->
+        <section id="report-page" class="page">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">📋</span>
+                    Relatórios
+                </h1>
+                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                    📊 Voltar ao Dashboard
+                </button>
+            </header>
+
+            <!-- Informações Gerais -->
+            <section class="info-card">
+                <header class="info-card__header">
+                    <span class="info-card__icon">💡</span>
+                    <h3 class="info-card__title">Geração de Relatórios</h3>
+                </header>
+                <div class="info-card__content">
+                    <p>Gere relatórios detalhados de suas despesas em formato PDF para análise, arquivamento ou
+                        compartilhamento.</p>
+                    <br>
+                    <strong>Tipos de relatórios disponíveis:</strong>
+                    <ul>
+                        <li><strong>Resumo Mensal:</strong> Visão geral das despesas do mês</li>
+                        <li><strong>Por Categoria:</strong> Análise detalhada por tipo de despesa</li>
+                        <li><strong>Por Responsável:</strong> Gastos organizados por pessoa</li>
+                        <li><strong>Análise de Tendências:</strong> Evolução dos gastos ao longo do tempo</li>
+                        <li><strong>Relatório Completo:</strong> Todos os dados em formato detalhado</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Estatísticas Rápidas -->
+            <section class="summary">
+                <div class="summary__card summary__card--blue">
+                    <div class="summary__value" id="reportTotalPeriodValue">R$ 0,00</div>
+                    <div class="summary__label">Total Período</div>
+                </div>
+                <div class="summary__card summary__card--gray">
+                    <div class="summary__value" id="reportTotalExpensesCount">0</div>
+                    <div class="summary__label">Total Despesas</div>
+                </div>
+                <div class="summary__card summary__card--green">
+                    <div class="summary__value" id="reportPaidExpensesCount">0</div>
+                    <div class="summary__label">Despesas Pagas</div>
+                </div>
+                <div class="summary__card summary__card--orange">
+                    <div class="summary__value" id="reportPendingExpensesCount">0</div>
+                    <div class="summary__label">Despesas Pendentes</div>
+                </div>
+            </section>
+
+            <!-- Filtros para Relatórios -->
+            <section class="filters">
+                <div class="filters__group">
+                    <label for="reportStartDate" class="filters__label">DATA INICIAL</label>
+                    <input type="date" id="reportStartDate" class="filters__input" onchange="applyReportFilters()">
+                </div>
+                <div class="filters__group">
+                    <label for="reportEndDate" class="filters__label">DATA FINAL</label>
+                    <input type="date" id="reportEndDate" class="filters__input" onchange="applyReportFilters()">
+                </div>
+                <div class="filters__group">
+                    <label for="reportCategoryFilter" class="filters__label">CATEGORIA</label>
+                    <select id="reportCategoryFilter" class="filters__input" onchange="applyReportFilters()">
+                        <option>Todas</option>
+                        <option>Aluguel</option>
+                        <option>Condomínio</option>
+                        <option>Serviços</option>
+                        <option>Impostos</option>
+                        <option>Seguro</option>
+                        <option>Compras</option>
+                        <option>Empréstimo</option>
+                        <option>Financiamento</option>
+                        <option>Consórcio</option>
+                        <option>Outra</option>
+                    </select>
+                </div>
+                <div class="filters__group">
+                    <label for="reportResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
+                    <select id="reportResponsibleFilter" class="filters__input" onchange="applyReportFilters()">
+                        <option>Todos</option>
+                        <!-- Populated dynamically from database -->
+                    </select>
+                </div>
+                <button class="btn btn--secondary" onclick="clearReportFilters()">Limpar Filtros</button>
+            </section>
+
+            <!-- Tipos de Relatórios -->
+            <section class="report-types">
+                <div class="report-grid">
+                    <!-- Relatório Resumo Mensal -->
+                    <div class="card card--report">
+                        <header class="card__header">
+                            <span class="card__icon">📈</span>
+                            <h3 class="card__title">Resumo Mensal</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Relatório completo com totais, gráficos e principais estatísticas do período selecionado.
+                            </p>
+                            <ul>
+                                <li>• Gráfico de despesas por categoria</li>
+                                <li>• Resumo de valores pagos vs pendentes</li>
+                                <li>• Lista de despesas vencidas</li>
+                                <li>• Projeções para próximo mês</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('monthly')">
+                                📊 Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+
+                    <!-- Relatório por Categoria -->
+                    <div class="card card--report">
+                        <header class="card__header">
+                            <span class="card__icon">🏷️</span>
+                            <h3 class="card__title">Por Categoria</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Análise detalhada dos gastos organizados por categoria de despesa.</p>
+                            <ul>
+                                <li>• Ranking das categorias mais custosas</li>
+                                <li>• Percentual de cada categoria</li>
+                                <li>• Comparativo com meses anteriores</li>
+                                <li>• Recomendações de otimização</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('category')">
+                                🏷️ Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+
+                    <!-- Relatório por Responsável -->
+                    <div class="card card--report">
+                        <header class="card__header">
+                            <span class="card__icon">👥</span>
+                            <h3 class="card__title">Por Responsável</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Distribuição dos gastos por pessoa responsável, ideal para controle familiar.</p>
+                            <ul>
+                                <li>• Gastos individuais detalhados</li>
+                                <li>• Percentual de participação</li>
+                                <li>• Histórico de pagamentos</li>
+                                <li>• Divisão de responsabilidades</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('responsible')">
+                                👥 Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+
+                    <!-- Análise de Tendências -->
+                    <div class="card card--report">
+                        <header class="card__header">
+                            <span class="card__icon">📉</span>
+                            <h3 class="card__title">Análise de Tendências</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Evolução dos gastos ao longo do tempo com projeções e insights.</p>
+                            <ul>
+                                <li>• Gráficos de evolução temporal</li>
+                                <li>• Sazonalidade dos gastos</li>
+                                <li>• Projeções futuras</li>
+                                <li>• Alertas de tendências</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('trends')">
+                                📉 Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+
+                    <!-- Relatório Completo -->
+                    <div class="card card--report card--complete">
+                        <header class="card__header">
+                            <span class="card__icon">📄</span>
+                            <h3 class="card__title">Relatório Completo</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Relatório abrangente com todos os dados detalhados e análises disponíveis.</p>
+                            <ul>
+                                <li>• Todos os tipos de análise</li>
+                                <li>• Dados completos do período</li>
+                                <li>• Gráficos e tabelas detalhadas</li>
+                                <li>• Documento para arquivamento</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('complete')">
+                                📄 Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+
+                    <!-- Relatório de Inadimplência -->
+                    <div class="card card--report card--warning">
+                        <header class="card__header">
+                            <span class="card__icon">⚠️</span>
+                            <h3 class="card__title">Inadimplência</h3>
+                        </header>
+                        <div class="card__body">
+                            <p>Relatório focado em despesas vencidas e em atraso para controle de pagamentos.</p>
+                            <ul>
+                                <li>• Lista de despesas em atraso</li>
+                                <li>• Dias de atraso por despesa</li>
+                                <li>• Impacto financeiro total</li>
+                                <li>• Cronograma de regularização</li>
+                            </ul>
+                        </div>
+                        <footer class="card__footer">
+                            <button class="btn btn--primary" onclick="generateReport('overdue')">
+                                ⚠️ Gerar Relatório
+                            </button>
+                        </footer>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Configurações do Relatório -->
+            <section class="card">
+                <header class="card__header">
+                    <span class="card__icon">⚙️</span>
+                    <h3 class="card__title">Configurações do Relatório</h3>
+                </header>
+                <div class="card__body">
+                    <div class="form__group">
+                        <h4 class="form__label">Formato do Arquivo</h4>
+                        <div class="format-options">
+                            <div class="format-option selected" data-format="pdf" onclick="selectReportFormat('pdf')">
+                                <div class="format-option__icon">📄</div>
+                                <div class="format-option__name">PDF</div>
+                                <div class="format-option__description">Recomendado</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <h4 class="form__label">Incluir Gráficos</h4>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="includeChartsOption" checked>
+                            <span class="checkbox-option__text">Incluir gráficos e visualizações</span>
+                        </label>
+                    </div>
+
+                    <div class="form__group">
+                        <h4 class="form__label">Detalhamento</h4>
+                        <label class="radio-option">
+                            <input type="radio" name="reportDetailLevel" value="summary" checked>
+                            <span class="radio-option__text">Resumido</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="reportDetailLevel" value="detailed">
+                            <span class="radio-option__text">Detalhado</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Page: Sobre o App -->
+        <section id="info-page" class="page">
+            <!-- Page Header -->
+            <header class="page__header">
+                <h1 class="page__title">
+                    <span class="page__icon">ℹ️</span>
+                    Sobre o App
+                </h1>
+                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                    📊 Voltar ao Dashboard
+                </button>
+            </header>
+
+            <!-- About Content -->
+            <div class="about-content">
+                <!-- App Overview -->
+                <div class="info-card">
+                    <header class="info-card__header">
+                        <span class="info-card__icon">💰</span>
+                        <h3 class="info-card__title">Controle de Gastos Domésticos (CGD)</h3>
+                    </header>
+                    <div class="info-card__content">
+                        <p>
+                            O CGD é uma aplicação desktop desenvolvida para ajudar você a organizar e controlar
+                            suas despesas domésticas de forma simples e eficiente.
+                        </p>
+                        <p>
+                            <br>
+                            <strong>Versão:</strong> <span class="version-badge">1.0.0</span><br>
+                            <strong>Ano:</strong> 2025 <br>
+                            <strong>Desenvolvedor:</strong> Douglas C. Venancio
+                        </p>
+                    </div>
+                </div>
+
+                <!-- App Info Grid -->
+                <div class="app-info-grid">
+                    <!-- Features -->
+                    <div class="info-card">
+                        <header class="info-card__header">
+                            <span class="info-card__icon">⭐</span>
+                            <h3 class="info-card__title">Recursos Principais</h3>
+                        </header>
+                        <div class="info-card__content">
+                            <ul class="features-list">
+                                <li><span class="feature-icon">✅</span> Cadastro e gestão de despesas</li>
+                                <li><span class="feature-icon">✅</span> Controle de parcelas e vencimentos</li>
+                                <li><span class="feature-icon">✅</span> Dashboard com gráficos e relatórios</li>
+                                <li><span class="feature-icon">✅</span> Filtros avançados e busca</li>
+                                <li><span class="feature-icon">✅</span> Backup e restauração de dados</li>
+                                <li><span class="feature-icon">✅</span> Modo claro e escuro</li>
+                                <li><span class="feature-icon">✅</span> Interface responsiva</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- System Requirements -->
+                    <div class="info-card">
+                        <header class="info-card__header">
+                            <span class="info-card__icon">💻</span>
+                            <h3 class="info-card__title">Requisitos do Sistema</h3>
+                        </header>
+                        <!-- <div class="info-card__content">
+                            <p><strong>Sistema Operacional:</strong><br>Windows 10/11 (64 bits)</p>
+                            <p><br><strong>RAM:</strong><br>Mínimo: 4GB | Recomendado: 8GB</p>
+                            <p><br><strong>Espaço em Disco:</strong><br>300MB livres</p>
+                            <p><br><strong>Resolução:</strong><br>Mínimo: 1024x768 | Recomendado: 1366×768 (ou superior)
+                            </p>
+                        </div> -->
+                        <div class="info-card__content">
+                            <p><strong>Resolução:</strong><br>
+                                Mínimo: 1024×768 | Recomendado: 1366×768 ou superior</p>
+                            <p><br><strong>Navegador:</strong><br>
+                                Chrome 90+, Firefox 88+, Edge 90+, Safari 14+</p>
+                            <p><br><strong>Armazenamento:</strong><br>
+                                LocalStorage habilitado no navegador<br>
+                                Recomendado: não usar aba anônima/privada<br>
+                                (dados são apagados ao limpar dados do navegador)</p>
+                            <p><br><strong>Conexão com Internet:</strong><br>
+                                Necessária apenas para carregar o Chart.js<br>
+                                (via CDN do cdnjs.cloudflare.com)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technologies -->
+                <div class="info-card">
+                    <header class="info-card__header">
+                        <span class="info-card__icon">🛠️</span>
+                        <h3 class="info-card__title">Tecnologias Utilizadas</h3>
+                    </header>
+                    <div class="info-card__content">
+                        <div class="tech-grid">
+                            <div class="tech-card">
+                                <span class="tech-card__icon">🌐</span>
+                                <h4 class="tech-card__name">HTML5</h4>
+                                <p class="tech-card__description">Estrutura semântica</p>
+                            </div>
+                            <div class="tech-card">
+                                <span class="tech-card__icon">🎨</span>
+                                <h4 class="tech-card__name">CSS3</h4>
+                                <p class="tech-card__description">Design responsivo</p>
+                            </div>
+                            <div class="tech-card">
+                                <span class="tech-card__icon">⚡</span>
+                                <h4 class="tech-card__name">JavaScript</h4>
+                                <p class="tech-card__description">Interatividade dinâmica</p>
+                            </div>
+                            <!--<div class="tech-card">
+                                <span class="tech-card__icon">🖥️</span>
+                                <h4 class="tech-card__name">Electron</h4>
+                                <p class="tech-card__description">Framework para aplicações desktop</p>
+                            </div> -->
+                            <div class="tech-card">
+                                <span class="tech-card__icon">💾</span>
+                                <h4 class="tech-card__name">LocalStorage</h4>
+                                <p class="tech-card__description">Armazenamento persistente no navegador</p>
+                            </div>
+                            <div class="tech-card">
+                                <span class="tech-card__icon">📊</span>
+                                <h4 class="tech-card__name">Chart.js</h4>
+                                <p class="tech-card__description">Gráficos interativos</p>
+                            </div>
+                            <div class="tech-card">
+                                <span class="tech-card__icon">📤</span>
+                                <h4 class="tech-card__name">JSON & CSV</h4>
+                                <p class="tech-card__description">Formato de exportação e backup</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Developer Info -->
+                <div class="contact-info">
+                    <h3>Desenvolvido com ❤️</h3>
+                    <p>Ferramenta completa e intuitiva para gestão de despesas domésticas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MODAIS ===== -->
+        <!-- Modal: Welcome -->
+        <div id="welcomeModal" class="modal-overlay modal--welcome" style="display: none;">
+            <div class="modal modal__content--welcome">
+                <header class="modal__header modal__header--welcome">
+                    <div class="modal__icon">💰</div>
+                    <h2 class="modal__title">Bem-vindo ao CGD!</h2>
+                </header>
+
+                <div class="modal__body">
+                    <div class="welcome__reminder">
+                        <strong>Lembrete Importante:</strong>
+                    </div>
+                    <p class="welcome__text">
+                        Cada despesa e parcela deve ser registrada manualmente no sistema.
+                        Isso garante maior controle sobre seus gastos domésticos.
+                    </p>
+                </div>
+
+                <footer class="modal__footer modal__footer--welcome">
+                    <button type="button" class="btn btn--welcome" onclick="closeModal('welcomeModal')">
+                        Entendi, vamos começar!
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Visualizar Despesa -->
+        <div id="view-modal" class="modal-overlay">
+            <div class="modal">
+                <header class="modal__header modal__header--view">
+                    <div class="modal__icon modal__icon--large">👁️</div>
+                    <h3 class="modal__title">Detalhes da Despesa</h3>
+                    <!-- <span class="modal__close" onclick="closeModal('view-modal')">&times;</span> -->
+                </header>
+                <section class="modal__body">
+                    <p class="confirmation__question">Todas as informações sobre a despesa selecionada:</p>
+
+                    <div class="expense-details">
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Descrição:</span>
+                            <span class="expense-details__value" id="viewDescricao"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Categoria:</span>
+                            <span class="expense-details__value" id="viewCategoria"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Responsável:</span>
+                            <span class="expense-details__value" id="viewResponsavel"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Parcelas:</span>
+                            <span class="expense-details__value" id="viewParcelas"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Valor:</span>
+                            <span class="expense-details__value" id="viewValor"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Pago?</span>
+                            <span class="expense-details__value" id="viewPago"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Forma de pagamento:</span>
+                            <span class="expense-details__value" id="viewFormaPagamento"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Vencimento:</span>
+                            <span class="expense-details__value" id="viewVencimento"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Novo Vencimento:</span>
+                            <span class="expense-details__value" id="viewNovoVencimento"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Status:</span>
+                            <span class="expense-details__value" id="viewStatus"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Observações:</span>
+                            <textarea id="viewObservacoes" class="form__input" readonly
+                                placeholder="Nenhuma informação adicionada."></textarea>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal__footer">
+                    <button class="btn btn--primary" onclick="closeModal('view-modal')">OK</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Adicionar Despesa -->
+        <div id="add-modal" class="modal-overlay modal--expense" style="display: none;">
+            <div class="modal modal__content--expense">
+                <header class="modal__header modal__header--new">
+                    <h3 class="modal__title">
+                        <span class="modal__icon">➕</span> Adicionar Despesa
+                    </h3>
+                </header>
+
+                <div class="modal__body">
+                    <form id="expenseForm" class="form">
+                        <!-- Description Field -->
+                        <div class="form__group form__group--full">
+                            <label for="expenseDescription"
+                                class="form__label form__label--required">Nome/Descrição</label>
+                            <input type="text" id="expenseDescription" name="descricao" class="form__input" required
+                                placeholder="Ex: Conta de luz (fatura de Maio)..."
+                                oninput="validateExpenseDescription()">
+                        </div>
+
+                        <!-- Category and Responsible -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="expenseCategory" class="form__label form__label--required">Categoria</label>
+                                <select id="expenseCategory" name="categoria" class="form__input" required
+                                    onchange="validateExpenseCategory()">
+                                    <option value="">Escolha...</option>
+                                    <option value="Aluguel">Aluguel</option>
+                                    <option value="Condomínio">Condomínio</option>
+                                    <option value="Serviços">Serviços</option>
+                                    <option value="Impostos">Impostos</option>
+                                    <option value="Seguro">Seguro</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Empréstimo">Empréstimo</option>
+                                    <option value="Financiamento">Financiamento</option>
+                                    <option value="Consórcio">Consórcio</option>
+                                    <option value="Outra">Outra</option>
+                                </select>
+                            </div>
+                            <div class="form__group">
+                                <label for="expenseResponsible"
+                                    class="form__label form__label--required">Responsável</label>
+                                <input type="text" id="expenseResponsible" name="responsavel" class="form__input"
+                                    required placeholder="Ex: João, Maria, Coletiva..."
+                                    oninput="validateExpenseResponsible()">
+                            </div>
+                        </div>
+
+                        <!-- Value and Installments -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="expenseValue" class="form__label form__label--required">Valor (R$)</label>
+                                <input type="number" id="expenseValue" name="valorTotal" class="form__input" step="0.01"
+                                    min="0.01" required placeholder="0,00" oninput="generateInstallmentsTable('add')">
+                            </div>
+                            <div class="form__group">
+                                <label for="expenseInstallments" class="form__label form__label--required">Total de
+                                    Parcelas</label>
+                                <input type="number" id="expenseInstallments" name="totalParcelas" class="form__input"
+                                    min="1" max="100" value="1" required oninput="generateInstallmentsTable('add')">
+                                <div class="form__warning" id="installmentsWarning">
+                                    <!-- Máximo de 100 parcelas permitidas -->>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Installments Schedule -->
+                        <section class="installments">
+                            <header class="installments__header">
+                                📅 <strong>Cronograma de Parcelas</strong>
+                            </header>
+
+                            <div class="installments__table-container">
+                                <table class="installments__table" id="installmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor (R$)</th>
+                                            <th>Parcela</th>
+                                            <th>Pago?</th>
+                                            <th>Forma</th>
+                                            <th>Vencimento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="installmentsTableBody">
+                                        <!-- Generated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Notes -->
+                        <div class="form__group form__group--full">
+                            <label for="expenseNotes" class="form__label">Observações</label>
+                            <textarea id="expenseNotes" name="observacoes" class="form__textarea" rows="3"
+                                placeholder="Informações adicionais sobre a despesa..."></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('add-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--save" onclick="saveExpense()">
+                        💾 Salvar
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Editar Despesa -->
+        <div id="edit-modal" class="modal-overlay modal--expense" style="display: none;">
+            <div class="modal modal__content--expense">
+                <header class="modal__header modal__header--edit">
+                    <h3 class="modal__title">
+                        <span class="modal__icon">✏️</span> Editar Despesa
+                    </h3>
+                </header>
+                <div class="modal__body">
+                    <form id="editExpenseForm" class="form">
+                        <!-- Description Field -->
+                        <div class="form__group form__group--full">
+                            <label for="editExpenseDescription"
+                                class="form__label form__label--required">Nome/Descrição</label>
+                            <input type="text" id="editExpenseDescription" name="descricao" class="form__input" required
+                                placeholder="Ex: Conta de luz (fatura de Maio)...">
+                        </div>
+
+                        <!-- Category and Responsible -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="editExpenseCategory"
+                                    class="form__label form__label--required">Categoria</label>
+                                <select id="editExpenseCategory" name="categoria" class="form__input" required>
+                                    <option value="">Escolha...</option>
+                                    <option value="Aluguel">Aluguel</option>
+                                    <option value="Condomínio">Condomínio</option>
+                                    <option value="Serviços">Serviços</option>
+                                    <option value="Impostos">Impostos</option>
+                                    <option value="Seguro">Seguro</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Empréstimo">Empréstimo</option>
+                                    <option value="Financiamento">Financiamento</option>
+                                    <option value="Consórcio">Consórcio</option>
+                                    <option value="Outra">Outra</option>
+                                </select>
+                            </div>
+                            <div class="form__group">
+                                <label for="editExpenseResponsible"
+                                    class="form__label form__label--required">Responsável</label>
+                                <input type="text" id="editExpenseResponsible" name="responsavel" class="form__input"
+                                    required placeholder="Ex: João, Maria, Coletiva...">
+                            </div>
+                        </div>
+
+                        <!-- Value and Installments -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="editExpenseValue" class="form__label form__label--required">Valor
+                                    (R$)</label>
+                                <input type="number" id="editExpenseValue" name="valorTotal" class="form__input"
+                                    step="0.01" min="0.01" required placeholder="0,00"
+                                    oninput="generateInstallmentsTable('edit', { expense: despesaSelecionada })">
+                            </div>
+                            <div class="form__group">
+                                <label for="editExpenseInstallments" class="form__label form__label--required">Total de
+                                    Parcelas</label>
+                                <input type="number" id="editExpenseInstallments" name="totalParcelas"
+                                    class="form__input" min="1" max="100" value="1" required
+                                    oninput="generateInstallmentsTable('edit', { expense: despesaSelecionada })">
+                                <div class="form__warning" id="editInstallmentsWarning">
+                                    <!-- Máximo de 100 parcelas permitidas -->>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Installments Schedule -->
+                        <section class="installments">
+                            <header class="installments__header">
+                                📅 <strong>Cronograma de Parcelas</strong>
+                            </header>
+
+                            <div class="installments__table-container">
+                                <table class="installments__table" id="editInstallmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor (R$)</th>
+                                            <th>Parcela</th>
+                                            <th>Pago?</th>
+                                            <th>Forma</th>
+                                            <th>Vencimento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="editInstallmentsTableBody">
+                                        <!-- Preenchido pelo JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Notes -->
+                        <div class="form__group form__group--full">
+                            <label for="editExpenseNotes" class="form__label">Observações</label>
+                            <textarea id="editExpenseNotes" name="observacoes" class="form__textarea" rows="3"
+                                placeholder="Informações adicionais sobre a despesa..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('edit-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--edit" onclick="updateExpense()">
+                        ✏️ Alterar
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Confirmar Pagamento -->
+        <div id="payment-modal" class="modal-overlay modal--confirmation" style="display: none;">
+            <div class="modal modal__content--confirmation">
+                <header class="modal__header modal__header--payment">
+                    <div class="modal__icon modal__icon--large">💵</div>
+                    <h3 class="modal__title">Confirmar Pagamento</h3>
+                </header>
+
+                <div class="modal__body">
+                    <p class="confirmation__question">Você tem certeza que deseja marcar esta despesa como paga?</p>
+
+                    <div class="expense-details" id="paymentExpenseDetails">
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Descrição:</span>
+                            <span class="expense-details__value" id="paymentDescription"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Categoria:</span>
+                            <span class="expense-details__value" id="paymentCategory"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Responsável:</span>
+                            <span class="expense-details__value" id="paymentResponsible"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Valor:</span>
+                            <span class="expense-details__value" id="paymentValue"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Vencimento:</span>
+                            <span class="expense-details__value" id="paymentDue"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Parcela:</span>
+                            <span class="expense-details__value" id="paymentInstallment"></span>
+                        </div>
+                    </div>
+
+                    <div class="confirmation__note">
+                        Esta ação irá mover a despesa para o status "Quitada".
+                    </div>
+
+                    <div class="form__group" style="margin-top: 15px;">
+                        <label for="paymentMethodSelect" class="form__label form__label--required">Forma de
+                            Pagamento</label>
+                        <select id="paymentMethodSelect" class="form__input" required
+                            onchange="validatePaymentButton()">
+                            <option value="">Escolha...</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Cartão (débito)">Cartão (débito)</option>
+                            <option value="Cartão (crédito)">Cartão (crédito)</option>
+                            <option value="PIX (débito)">PIX (débito)</option>
+                            <option value="PIX (crédito)">PIX (crédito)</option>
+                            <option value="Débito automático">Débito automático</option>
+                        </select>
+                    </div>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('payment-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" id="confirmPaymentBtn" class="btn btn--confirm-payment"
+                        onclick="confirmPayment()" disabled>
+                        ✅ Sim, Marcar como Pago
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Atualizar Despesa -->
+        <div id="update-modal" class="modal-overlay modal--expense" style="display: none;">
+            <div class="modal modal__content--expense">
+                <header class="modal__header modal__header--update">
+                    <h3 class="modal__title">
+                        <span class="modal__icon">🔄</span> Atualizar Despesa
+                    </h3>
+                </header>
+
+                <div class="modal__body">
+                    <form id="updateExpenseForm" class="form">
+                        <!-- Description Field -->
+                        <div class="form__group form__group--full">
+                            <label for="updateDescription" class="form__label">Nome/Descrição</label>
+                            <!-- Preenchido automaticamente com base nos registros do database JSON -->
+                            <input type="text" id="updateDescription" name="descricao" class="form__input"
+                                placeholder="" disabled>
+                        </div>
+
+                        <!-- Category and Responsible -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="updateCategory" class="form__label">Categoria</label>
+                                <select id="updateCategory" name="categoria" class="form__input" disabled>
+                                    <option value="">Escolha...</option>
+                                    <option value="Aluguel">Aluguel</option>
+                                    <option value="Condomínio">Condomínio</option>
+                                    <option value="Serviços">Serviços</option>
+                                    <option value="Impostos">Impostos</option>
+                                    <option value="Seguro">Seguro</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Empréstimo">Empréstimo</option>
+                                    <option value="Financiamento">Financiamento</option>
+                                    <option value="Consórcio">Consórcio</option>
+                                    <option value="Outra">Outra</option>
+                                </select>
+                            </div>
+
+                            <div class="form__group">
+                                <label for="updateResponsible"
+                                    class="form__label form__label--required">Responsável</label>
+                                <!-- Preenchido automaticamente com base nos registros do database JSON -->
+                                <input type="text" id="updateResponsible" name="descricao" class="form__input"
+                                    placeholder="">
+                            </div>
+                        </div>
+
+                        <!-- Value and Installments -->
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="updateValue" class="form__label form__label--required">Valor Total
+                                    (R$)</label>
+                                <!-- Preenchido automaticamente com base nos registros do database JSON -->
+                                <input id="updateValue" name="valor" type="number" step="0.01" min="0"
+                                    class="form__input" required oninput="generateInstallmentsTable('update')">
+                            </div>
+
+                            <div class="form__group">
+                                <label for="updateInstallments" class="form__label form__label--required">Total de
+                                    Parcelas</label>
+                                <!-- Selecionar por padrão '1' -->
+                                <input id="updateInstallments" name="parcelas" type="number" min="1" value="1"
+                                    class="form__input" required oninput="generateInstallmentsTable('update')">
+                            </div>
+                        </div>
+
+                        <!-- Installments Schedule -->
+                        <section class="installments">
+                            <header class="installments__header">
+                                📅 <strong>Cronograma de Parcelas</strong>
+                            </header>
+                            <div class="installments__table-container">
+                                <table class="installments__table" id="updateInstallmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor (R$)</th>
+                                            <th>Parcela</th>
+                                            <th>Pago?</th>
+                                            <th>Forma</th>
+                                            <th>Vencimento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="updateInstallmentsTableBody">
+                                        <!-- Preenchido pelo JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('update-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--update" onclick="confirmUpdate()">
+                        🔄 Atualizar
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Confirmar Exclusão -->
+        <div id="delete-modal" class="modal-overlay modal--confirmation" style="display: none;">
+            <div class="modal modal__content--confirmation">
+                <header class="modal__header modal__header--delete">
+                    <div class="modal__icon modal__icon--large">🗑️</div>
+                    <h3 class="modal__title">Confirmar Exclusão</h3>
+                </header>
+
+                <div class="modal__body">
+                    <p class="confirmation__question">Você tem certeza que deseja excluir esta despesa?</p>
+
+                    <div class="expense-details" id="deleteExpenseDetails">
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Descrição:</span>
+                            <span class="expense-details__value" id="deleteDescription"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Categoria:</span>
+                            <span class="expense-details__value" id="deleteCategory"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Responsável:</span>
+                            <span class="expense-details__value" id="deleteResponsible"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Valor:</span>
+                            <span class="expense-details__value" id="deleteValue"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Forma de pagamento:</span>
+                            <span class="expense-details__value" id="deleteFormaPagamento"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Vencimento:</span>
+                            <span class="expense-details__value" id="deleteDue"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Parcela:</span>
+                            <span class="expense-details__value" id="deleteInstallment"></span>
+                        </div>
+                        <div class="expense-details__row">
+                            <span class="expense-details__label">Status:</span>
+                            <span class="expense-details__value" id="deleteStatus"></span>
+                        </div>
+                    </div>
+
+                    <div class="warning">
+                        <span class="warning__icon">⚠️</span>
+                        <strong class="warning__title">ATENÇÃO:</strong> Esta ação não pode ser desfeita!
+                        <div class="warning__text">A despesa será removida permanentemente do sistema.</div>
+                    </div>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('delete-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--confirm-delete" onclick="confirmDelete()">
+                        🗑️ Sim, Excluir Permanentemente
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Restaurar Dados -->
+        <div id="restore-modal" class="modal-overlay modal--confirmation" style="display: none;">
+            <div class="modal modal__content--confirmation">
+                <header class="modal__header modal__header--warning">
+                    <div class="modal__icon modal__icon--large">⚠️</div>
+                    <h3 class="modal__title">Atenção!</h3>
+                </header>
+
+                <div class="modal__body">
+                    <p class="confirmation__question">Você está prestes a restaurar um backup.</p>
+
+                    <p class="restore-warning">
+                        Esta operação pode <strong class="text--danger">alterar ou substituir permanentemente</strong>
+                        os dados atuais do sistema dependendo das opções escolhidas.
+                    </p>
+
+                    <div class="recommendation">
+                        <header class="recommendation__header">
+                            <span class="recommendation__icon">🛡️</span>
+                            <strong>Recomendação:</strong>
+                        </header>
+                        <div class="recommendation__text">
+                            Faça um backup dos seus dados atuais antes de prosseguir para evitar perda irreversível de
+                            informações.
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('restore-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--restore" onclick="performImport()">
+                        📁 Proseguir com a Restauração
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Modal: Sair do Sistema -->
+        <div id="exit-modal" class="modal-overlay modal--confirmation" style="display: none;">
+            <div class="modal modal__content--confirmation">
+                <header class="modal__header modal__header--warning">
+                    <div class="modal__icon modal__icon--large">🚪</div>
+                    <h3 class="modal__title">Sair do Sistema</h3>
+                </header>
+
+                <div class="modal__body">
+                    <p class="confirmation__question">Você tem certeza que deseja sair do sistema?</p>
+
+                    <div class="recommendation">
+                        <header class="recommendation__header">
+                            <span class="recommendation__icon">💡</span>
+                            <strong>Dica:</strong>
+                        </header>
+                        <div class="recommendation__text">
+                            Todos os seus dados estão salvos automaticamente. Você pode sair com segurança.
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--cancel" onclick="closeModal('exit-modal')">
+                        ❌ Cancelar
+                    </button>
+                    <button type="button" class="btn btn--confirm-exit" onclick="confirmExit()">
+                        🚪 Sim, Sair do Sistema
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- ===== SCRIPTS ===== -->
+        <script src="assets/js/main.js"></script>
+</body>
+
+</html>
