@@ -1,0 +1,88 @@
+/* =============================================================
+   pages/info.css — Sobre / About
+   ============================================================= */
+
+/* 20. ℹ️Sobre / About */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.app-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.features-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.feature-icon {
+    margin-right: var(--spacing-sm);
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.tech-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.tech-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.tech-card__icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tech-card__name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: var(--spacing-xs);
+}
+
+.tech-card__description {
+    font-size: 13px;
+    color: var(--color-dark-gray);
+}
+
+.contact-info {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    border-radius: var(--border-radius-lg);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.version-badge {
+    display: inline-block;
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 12px;
+    margin-left: var(--spacing-xs);
+}
+
+
+

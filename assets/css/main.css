@@ -1,0 +1,31 @@
+/* =============================================================
+   main.css — Ponto de entrada CSS
+   Importa todos os módulos na ordem correta.
+   NÃO adicione estilos aqui — use os arquivos de cada módulo.
+   ============================================================= */
+
+/* Base */
+@import url('./base/reset.css');
+@import url('./base/variables.css');
+
+/* Layout */
+@import url('./layout/sidebar.css');
+@import url('./layout/main-content.css');
+
+/* Componentes */
+@import url('./components/buttons.css');
+@import url('./components/forms.css');
+@import url('./components/cards.css');
+@import url('./components/table.css');
+@import url('./components/modal.css');
+@import url('./components/badges.css');
+@import url('./components/charts.css');
+
+/* Páginas */
+@import url('./pages/payment.css');
+@import url('./pages/backup.css');
+@import url('./pages/report.css');
+@import url('./pages/info.css');
+
+/* Responsividade */
+@import url('./base/responsive.css');

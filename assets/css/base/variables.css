@@ -1,0 +1,46 @@
+/* =============================================================
+   base/variables.css — Design tokens globais
+   ============================================================= */
+
+:root {
+    --color-primary: #3498db;
+    --color-primary-dark: #2980b9;
+    --color-secondary: #95a5a6;
+    --color-secondary-dark: #7f8c8d;
+
+    --color-success: #27ae60;
+    --color-success-dark: #229954;
+    --color-danger: #e74c3c;
+    --color-danger-dark: #c0392b;
+    --color-warning: #f39c12;
+    --color-warning-dark: #e67e22;
+    --color-info: #3498db;
+    --color-purple: #9b59b6;
+    --color-purple-dark: #8e44ad;
+
+    --color-white: #ffffff;
+    --color-light: #f1f3f5;
+    --color-light-gray: #ecf0f1;
+    --color-gray: #bdc3c7;
+    --color-dark-gray: #7f8c8d;
+    --color-dark: #2c3e50;
+    --color-darker: #1a1a1a;
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}

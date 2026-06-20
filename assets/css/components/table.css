@@ -1,0 +1,111 @@
+/* =============================================================
+   components/table.css — Tabela de dados
+   ============================================================= */
+
+/* 10. #️⃣Tabela */
+.data-table {
+    background: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-light-gray);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table__header {
+    background: var(--color-light);
+}
+
+.table__cell--header {
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-dark);
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--color-light-gray);
+}
+
+.table__body .table__cell:not(:first-child) {
+    text-align: center;
+}
+
+.table__body .table__cell:first-child {
+    text-align: left;
+}
+
+.table__body {
+    background: var(--color-white);
+}
+
+.table__row {
+    transition: var(--transition-fast);
+}
+
+.table__row:nth-child(even) {
+    background: var(--color-light);
+}
+
+.table__row:hover {
+    background: #e8f4f8;
+    transform: scale(1.001);
+}
+
+.table__cell {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-light-gray);
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.table__cell--actions {
+    text-align: center;
+    width: 120px;
+}
+
+.table__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+body.dark-mode .table__header {
+    background: var(--color-dark);
+}
+
+body.dark-mode .table__cell--header {
+    background: var(--color-dark);
+    color: var(--color-white);
+    border-bottom-color: #4a5f7a;
+}
+
+body.dark-mode .table__body {
+    background: #34495e;
+}
+
+body.dark-mode .table__row {
+    background: #34495e;
+    color: var(--color-white);
+}
+
+body.dark-mode .table__row:nth-child(even) {
+    background: #3a506b;
+}
+
+body.dark-mode .table__row:hover {
+    background: #4a5f7a;
+}
+
+body.dark-mode .table__cell {
+    border-bottom-color: #4a5f7a;
+    color: var(--color-white);
+}
+
+
+

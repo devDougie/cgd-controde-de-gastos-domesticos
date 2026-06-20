@@ -1,0 +1,81 @@
+/* =============================================================
+   components/badges.css — Status Badges
+   ============================================================= */
+
+/* 16. 🏷️Status Badges */
+.status-badge {
+    display: inline-block;
+    width: 110px;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.status-badge--paid {
+    background: #d4edda;
+    color: #155724;
+    border-color: #155724;
+}
+
+.status-badge--open {
+    background: #ffe5cc;
+    color: #cc5200;
+    border-color: #cc5200;
+}
+
+.status-badge--overdue {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #721c24;
+}
+
+.status-badge--rescheduled {
+    background: #fff3cd;
+    color: #856404;
+    border-color: #856404;
+}
+
+.status-badge--moved {
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #6b7280;
+}
+
+body.dark-mode .status-badge--paid {
+    background: #1e3a20;
+    color: #a9dfac;
+    border-color: #a9dfac;
+}
+
+body.dark-mode .status-badge--open {
+    background: #331f0d;
+    color: #ff944d;
+    border-color: #ff944d;
+}
+
+body.dark-mode .status-badge--overdue {
+    background: #3a1e20;
+    color: #f1a9ac;
+    border-color: #f1a9ac;
+}
+
+body.dark-mode .status-badge--rescheduled {
+    background: #3a2f1a;
+    color: #f4d03f;
+    border-color: #f4d03f;
+}
+
+.dark-mode .status-badge--moved {
+    background: #1f2937;
+    color: #d1d5db;
+    border-color: #9ca3af;
+}
+
+
+

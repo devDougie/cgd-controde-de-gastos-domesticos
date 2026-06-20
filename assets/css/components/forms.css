@@ -1,0 +1,302 @@
+/* =============================================================
+   components/forms.css — Seletor de Data, Filtros, Busca e Formulários
+   ============================================================= */
+
+/* 6. 🗓️Seletor de Data e Filtros */
+.date-selector {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    padding-left: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-light-gray);
+    background: var(--color-light);
+    min-height: 50px;
+}
+
+.date-selector__group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.date-selector__label {
+    font-weight: 600;
+    color: var(--color-dark-gray);
+    font-size: 14px;
+}
+
+.date-selector__input {
+    padding: var(--spacing-sm) 12px;
+    border: 1px solid var(--color-gray);
+    border-radius: var(--border-radius-sm);
+    background: var(--color-white);
+    min-width: 120px;
+}
+
+.filters {
+    background: var(--color-light);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-light-gray);
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.filters__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    min-width: 120px;
+}
+
+.filters__label {
+    font-weight: 600;
+    color: var(--color-dark-gray);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filters__input {
+    padding: var(--spacing-sm) 12px;
+    border: 1px solid var(--color-gray);
+    border-radius: var(--border-radius-sm);
+    background: var(--color-white);
+    transition: var(--transition-normal);
+}
+
+.filters__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+body.dark-mode .date-selector,
+body.dark-mode .filters {
+    background: #34495e;
+    border: 1px solid #4a5f7a;
+    color: var(--color-white);
+}
+
+body.dark-mode .date-selector__label,
+body.dark-mode .filters__label {
+    color: var(--color-gray);
+}
+
+body.dark-mode .data-table {
+    background: #34495e;
+    border: 1px solid #4a5f7a;
+    color: var(--color-white);
+}
+
+
+
+
+
+/* 7. 🔍Busca */
+.search {
+    margin-bottom: var(--spacing-lg);
+}
+
+.search__container {
+    flex: 1;
+    max-width: none;
+    position: relative;
+}
+
+.search__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-dark-gray);
+    font-size: 16px;
+}
+
+.search__input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    background: var(--color-white);
+    font-size: 14px;
+    transition: var(--transition-normal);
+}
+
+.search__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.search__input::placeholder {
+    color: var(--color-dark-gray);
+}
+
+body.dark-mode .search__input {
+    background: var(--color-dark);
+    color: var(--color-white);
+    border-color: #4a5f7a;
+}
+
+body.dark-mode .search__input::placeholder {
+    color: var(--color-gray);
+}
+
+body.dark-mode .search__icon {
+    color: var(--color-gray);
+}
+
+
+
+
+
+/* 12. 📝Formulários */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form__group--full {
+    grid-column: 1 / -1;
+}
+
+.form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.form__label {
+    font-weight: 600;
+    color: var(--color-dark);
+    font-size: 14px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.form__label--required::after {
+    content: ' *';
+    color: var(--color-danger);
+}
+
+.form__input {
+    padding: 12px 16px;
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    transition: var(--transition-normal);
+    background: var(--color-white);
+}
+
+.form__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.form__input:invalid {
+    border-color: var(--color-danger);
+}
+
+.form__textarea {
+    padding: 12px 16px;
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    transition: var(--transition-normal);
+}
+
+.form__textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.form__warning {
+    font-size: 12px;
+    color: var(--color-warning-dark);
+    margin-top: var(--spacing-xs);
+    display: none;
+}
+
+.form__warning.show {
+    display: block;
+}
+
+.form__input--file {
+    padding: 10px;
+    border: 2px dashed var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    background: var(--color-light);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.form__input--file:hover {
+    border-color: var(--color-primary);
+    background: #e8f4f8;
+}
+
+.form__group h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    background: var(--color-light-gray);
+    color: var(--color-dark-gray);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background: var(--color-dark);
+    color: var(--color-white);
+    border-color: #4a5f7a;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+body.dark-mode .form__label {
+    color: var(--color-gray);
+}
+
+body.dark-mode input:disabled,
+body.dark-mode select:disabled,
+body.dark-mode textarea:disabled {
+    background: #2f3b4a;
+    color: var(--color-gray);
+    border-color: #4a5f7a;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+

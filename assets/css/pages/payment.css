@@ -1,0 +1,130 @@
+/* =============================================================
+   pages/payment.css — Pagamento e Parcelas
+   ============================================================= */
+
+/* 13. 💳Pagamento e Parcelas */
+.installments {
+    background: var(--color-light);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+.installments__header {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.installments__table-container {
+    overflow-x: auto;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-light-gray);
+}
+
+.installments__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-white);
+}
+
+.installments__table th {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.installments__table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-light-gray);
+    font-size: 14px;
+}
+
+.installments__table tr:last-child td {
+    border-bottom: none;
+}
+
+.installments__table input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+}
+
+.payment {
+    background: var(--color-light);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    text-align: center;
+}
+
+.payment__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-md);
+}
+
+.payment__options {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+}
+
+.payment__option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.payment__option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+}
+
+.payment__label {
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+body.dark-mode .installments,
+body.dark-mode .payment {
+    background: var(--color-darker);
+    border-color: #4a5f7a;
+}
+
+body.dark-mode .installments__header,
+body.dark-mode .payment__title {
+    color: var(--color-white);
+}
+
+body.dark-mode .installments__table {
+    background: var(--color-dark);
+    border-color: #4a5f7a;
+}
+
+body.dark-mode .installments__table th {
+    background: var(--color-primary);
+}
+
+body.dark-mode .installments__table td {
+    border-color: #4a5f7a;
+    color: var(--color-white);
+}
+
+
+

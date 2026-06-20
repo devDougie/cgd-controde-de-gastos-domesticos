@@ -1,0 +1,148 @@
+/* =============================================================
+   pages/backup.css — Backup e Importação/Exportação
+   ============================================================= */
+
+/* 17. 💾Backup e Importação/Exportação */
+.backup-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.backup-section {
+    background: var(--color-white);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.backup-section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.backup-section--export {
+    border-left-color: var(--color-success);
+}
+
+.backup-section--import {
+    border-left-color: var(--color-warning);
+}
+
+.backup-section__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-light-gray);
+}
+
+.backup-section__icon {
+    font-size: 28px;
+    margin-right: var(--spacing-md);
+}
+
+.backup-section--export .backup-section__icon {
+    color: var(--color-success);
+}
+
+.backup-section--import .backup-section__icon {
+    color: var(--color-warning);
+}
+
+.backup-section__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.backup-section__description {
+    color: var(--color-dark-gray);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-lg);
+}
+
+.format-options {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.format-option {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition-normal);
+    background: var(--color-white);
+}
+
+.format-option:hover {
+    border-color: var(--color-primary);
+    background: #e8f4f8;
+}
+
+.format-option.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.format-option__icon {
+    font-size: 24px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.format-option__name {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.format-option__description {
+    font-size: 12px;
+    color: var(--color-dark-gray);
+}
+
+.format-option.selected .format-option__description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+body.dark-mode .backup-section {
+    background: #34495e;
+    border: 1px solid #4a5f7a;
+    color: var(--color-white);
+}
+
+body.dark-mode .backup-section__title {
+    color: var(--color-white);
+}
+
+body.dark-mode .format-option {
+    background: var(--color-dark);
+    border: 1px solid #4a5f7a;
+    color: var(--color-white);
+}
+
+body.dark-mode .format-option:hover {
+    border-color: var(--color-primary);
+    background: #2c3e50;
+}
+
+body.dark-mode .format-option.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+body.dark-mode .format-option.selected .format-option__description {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+

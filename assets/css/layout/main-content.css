@@ -1,0 +1,52 @@
+/* =============================================================
+   layout/main-content.css — Área principal de conteúdo
+   ============================================================= */
+
+/* 4. 🗃️Layout — Páginas */
+.page {
+    display: none;
+    padding: var(--spacing-xl);
+    background: var(--color-white);
+    min-height: 100vh;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: var(--transition-normal);
+}
+
+.page--active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.page__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.page__title {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    color: var(--color-dark);
+    flex: 1;
+}
+
+.page__icon {
+    margin-right: var(--spacing-md);
+    font-size: 24px;
+}
+
+body.dark-mode .page {
+    background: var(--color-darker);
+    color: var(--color-white);
+}
+
+body.dark-mode .page__title {
+    color: var(--color-white);
+}
+
+
+

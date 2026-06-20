@@ -1,0 +1,275 @@
+/* =============================================================
+   components/buttons.css — Botões
+   ============================================================= */
+
+/* 5. 🔘Botões */
+.btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition-normal);
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn--primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn--primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn--secondary {
+    background: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.btn--secondary:hover {
+    background: var(--color-secondary-dark);
+}
+
+.btn--cancel {
+    background: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.btn--cancel:hover {
+    background: var(--color-danger-dark);
+    transform: translateY(-1px);
+}
+
+.btn--view {
+    background: var(--color-info);
+    color: var(--color-white);
+}
+
+.btn--view:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn--save {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn--save:hover {
+    background: var(--color-success-dark);
+    transform: translateY(-1px);
+}
+
+.btn--edit {
+    background: var(--color-warning);
+    color: var(--color-white);
+}
+
+.btn--edit:hover {
+    background: #d4ac0d;
+    transform: translateY(-1px);
+}
+
+.btn--pay {
+    background: var(--color-success);
+    color: var(--color-white);
+}
+
+.btn--pay:hover {
+    background: #2ecc71;
+    transform: translateY(-1px);
+}
+
+.btn--update {
+    background: var(--color-purple-dark);
+    color: var(--color-white);
+}
+
+.btn--update:hover {
+    background: #732d91;
+    transform: translateY(-1px);
+}
+
+.btn--welcome {
+    background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
+    color: var(--color-white);
+    padding: 14px 32px;
+    border-radius: var(--border-radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    min-width: 200px;
+}
+
+.btn--welcome:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+    background: linear-gradient(135deg, var(--color-success-dark), #1e8449);
+}
+
+.btn--confirm-payment {
+    background: linear-gradient(135deg, var(--color-success), #2ecc71);
+    color: var(--color-white);
+}
+
+.btn--confirm-payment:hover {
+    background: linear-gradient(135deg, var(--color-success-dark), var(--color-success));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn--confirm-delete {
+    background: linear-gradient(135deg, var(--color-danger), var(--color-danger-dark));
+    color: var(--color-white);
+}
+
+.btn--confirm-delete:hover {
+    background: linear-gradient(135deg, var(--color-danger-dark), #a93226);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn--backup {
+    background: linear-gradient(135deg, var(--color-success), #2ecc71);
+    color: var(--color-white);
+}
+
+.btn--backup:hover {
+    background: linear-gradient(135deg, var(--color-success-dark), var(--color-success));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn--restore {
+    background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark));
+    color: var(--color-white);
+}
+
+.btn--restore:hover {
+    background: linear-gradient(135deg, var(--color-warning-dark), #d35400);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+.btn--confirm-exit {
+    background: linear-gradient(135deg, var(--color-warning-dark), #d35400);
+    color: var(--color-white);
+}
+
+.btn--confirm-exit:hover {
+    background: linear-gradient(135deg, #d35400, #bf360c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+.btn--small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 12px;
+    border-radius: var(--border-radius-sm);
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 16px;
+    transition: var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.btn-action--edit {
+    background: #ffe0b2;
+    color: #ef6c00;
+}
+
+.btn-action--edit:hover {
+    background: #ffcc80;
+    transform: translateY(-1px);
+}
+
+.btn-action--delete {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+.btn-action--delete:hover {
+    background: #ef9a9a;
+    transform: translateY(-1px);
+}
+
+.btn-action--confirm {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.btn-action--confirm:hover {
+    background: #a5d6a7;
+    transform: translateY(-1px);
+}
+
+.btn-action--update {
+    background: #bbdefb;
+    color: #1565c0;
+}
+
+.btn-action--update:hover {
+    background: #90caf9;
+    transform: translateY(-1px);
+}
+
+.btn-action--locked {
+    background: #e0e0e0;
+    color: #616161;
+    cursor: not-allowed;
+}
+
+.btn-action--locked:hover {
+    background: #bdbdbd;
+    transform: none;
+}
+
+#backup-page .btn {
+    width: auto;
+    display: inline-flex;
+    justify-content: center;
+    align-self: center;
+}
+
+
+
