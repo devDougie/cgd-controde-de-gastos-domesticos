@@ -34,7 +34,7 @@
 
         <!-- Theme Toggle -->
         <section class="sidebar__theme-toggle">
-            <div class="theme-toggle__container" id="themeToggle" onclick="toggleTheme()">
+            <div class="theme-toggle__container" id="themeToggle" onclick="CGD.toggleTheme()">
                 <div class="theme-toggle__slider"></div>
             </div>
             <span class="theme-toggle__text" id="modeText">☀️ Modo Claro</span>
@@ -63,7 +63,7 @@
                 <h3 class="nav__section-title">DASHBOARD</h3>
                 <ul class="nav__menu">
                     <li class="nav__item nav__item--active" data-page="dashboard-page"
-                        onclick="navigateTo('dashboard-page')">
+                        onclick="CGD.navigateTo('dashboard-page')">
                         <span class="nav__icon">📊</span>
                         <span class="nav__text">Visão Geral</span>
                     </li>
@@ -74,15 +74,15 @@
             <section class="nav__section">
                 <h3 class="nav__section-title">DESPESAS</h3>
                 <ul class="nav__menu">
-                    <li class="nav__item" onclick="showModal('add-modal')">
+                    <li class="nav__item" onclick="CGD.showModal('add-modal')">
                         <span class="nav__icon">➕</span>
                         <span class="nav__text">Adicionar</span>
                     </li>
-                    <li class="nav__item" data-page="edit-page" onclick="navigateTo('edit-page')">
+                    <li class="nav__item" data-page="edit-page" onclick="CGD.navigateTo('edit-page')">
                         <span class="nav__icon">✏️</span>
                         <span class="nav__text">Editar/Remover</span>
                     </li>
-                    <li class="nav__item" data-page="payment-page" onclick="navigateTo('payment-page')">
+                    <li class="nav__item" data-page="payment-page" onclick="CGD.navigateTo('payment-page')">
                         <span class="nav__icon">💵</span>
                         <span class="nav__text">Pagar/Atualizar</span>
                     </li>
@@ -93,7 +93,7 @@
             <section class="nav__section">
                 <h3 class="nav__section-title">BACKUP</h3>
                 <ul class="nav__menu">
-                    <li class="nav__item" data-page="backup-page" onclick="navigateTo('backup-page')">
+                    <li class="nav__item" data-page="backup-page" onclick="CGD.navigateTo('backup-page')">
                         <span class="nav__icon">💾</span>
                         <span class="nav__text">Exportar/Importar</span>
                     </li>
@@ -105,7 +105,7 @@
             <section class="nav__section">
                 <h3 class="nav__section-title">Relatórios</h3>
                 <ul class="nav__menu">
-                    <li class="nav__item" data-page="report-page" onclick="navigateTo('report-page')">
+                    <li class="nav__item" data-page="report-page" onclick="CGD.navigateTo('report-page')">
                         <span class="nav__icon">📋</span>
                         <span class="nav__text">Relatórios</span>
                     </li>
@@ -117,11 +117,11 @@
             <section class="nav__section">
                 <h3 class="nav__section-title">PROGRAMA</h3>
                 <ul class="nav__menu">
-                    <li class="nav__item" data-page="info-page" onclick="navigateTo('info-page')">
+                    <li class="nav__item" data-page="info-page" onclick="CGD.navigateTo('info-page')">
                         <span class="nav__icon">ℹ️</span>
                         <span class="nav__text">Sobre o App</span>
                     </li>
-                    <li class="nav__item" onclick="showModal('exit-modal')">
+                    <li class="nav__item" onclick="CGD.showModal('exit-modal')">
                         <span class="nav__icon">🚪</span>
                         <span class="nav__text">Sair</span>
                     </li>
@@ -142,7 +142,7 @@
                     <span class="page__icon">📊</span>
                     Visão Geral das Despesas
                 </h1>
-                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                <button class="btn btn--primary" onclick="CGD.showModal('add-modal')">
                     ➕ Adicionar Despesa
                 </button>
             </header>
@@ -151,7 +151,7 @@
             <section class="date-selector">
                 <div class="date-selector__group">
                     <label for="monthSelect" class="date-selector__label">MÊS:</label>
-                    <select id="monthSelect" class="date-selector__input" onchange="updateDateFilter()">
+                    <select id="monthSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
                         <!-- Selecionar por padrão o mês atual obtido pelo sistema operacional -->
                         <option>Janeiro</option>
                         <option>Fevereiro</option>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="date-selector__group">
                     <label for="yearSelect" class="date-selector__label">ANO:</label>
-                    <select id="yearSelect" class="date-selector__input" onchange="updateDateFilter()">
+                    <select id="yearSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
                         <!-- Selecionar por padrão o ano atual obtido pelo sistema operacional -->
                         <!-- Popular com anos dos registros do database JSON -->
                     </select>
@@ -299,7 +299,7 @@
             <section class="filters">
                 <div class="filters__group">
                     <label for="categoryFilter" class="filters__label">CATEGORIA</label>
-                    <select id="categoryFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                    <select id="categoryFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
                         <!-- Selecionar por padrão 'Todas' -->
                         <option>Todas</option>
                         <option>Aluguel</option>
@@ -316,7 +316,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="statusFilter" class="filters__label">STATUS</label>
-                    <select id="statusFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                    <select id="statusFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
                         <!-- Selecionar por padrão o 'Todas' -->
                         <!-- Definir automaticamente com base nos registros do database JSON -->
                         <option>Todos</option>
@@ -324,7 +324,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="responsibleFilter" class="filters__label">RESPONSÁVEL</label>
-                    <select id="responsibleFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                    <select id="responsibleFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
                         <!-- Selecionar por padrão o 'Todos' -->
                         <!-- Popular com responsáveis dos registros do database JSON -->
                         <option>Todos</option>
@@ -332,7 +332,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="sortFilter" class="filters__label">ORDENAR POR</label>
-                    <select id="sortFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                    <select id="sortFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
                         <!-- Selecionar por padrão o 'Vencimento' -->
                         <option>Vencimento</option>
                         <option>Valor</option>
@@ -342,7 +342,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="paymentMethodFilter" class="filters__label">FORMA DE PAGAMENTO</label>
-                    <select id="paymentMethodFilter" class="filters__input" onchange="applyPageFilters('dashboard')">
+                    <select id="paymentMethodFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
                         <option value="Todos">Todos</option>
                         <option value="Dinheiro">Dinheiro</option>
                         <option value="Cheque">Cheque</option>
@@ -353,7 +353,7 @@
                         <option value="Débito automático">Débito automático</option>
                     </select>
                 </div>
-                <button class="btn btn--secondary" onclick="clearFilters('dashboard')">Limpar Filtros</button>
+                <button class="btn btn--secondary" onclick="CGD.clearFilters('dashboard')">Limpar Filtros</button>
             </section>
 
             <!-- Data Table -->
@@ -388,7 +388,7 @@
                     <span class="page__icon">📝</span>
                     Editar/Remover Despesa
                 </h1>
-                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                <button class="btn btn--primary" onclick="CGD.showModal('add-modal')">
                     ➕ Adicionar Despesa
                 </button>
             </header>
@@ -397,7 +397,7 @@
             <section class="date-selector">
                 <div class="date-selector__group">
                     <label for="editMonthSelect" class="date-selector__label">MÊS:</label>
-                    <select id="editMonthSelect" class="date-selector__input" onchange="applyPageFilters('edit')">
+                    <select id="editMonthSelect" class="date-selector__input" onchange="CGD.applyPageFilters('edit')">
                         <!-- Selecionar por padrão o 'Todos os meses' -->
                         <option>Todos os meses</option>
                         <option>Janeiro</option>
@@ -416,7 +416,7 @@
                 </div>
                 <div class="date-selector__group">
                     <label for="editYearSelect" class="date-selector__label">ANO:</label>
-                    <select id="editYearSelect" class="date-selector__input" onchange="applyPageFilters('edit')">
+                    <select id="editYearSelect" class="date-selector__input" onchange="CGD.applyPageFilters('edit')">
                         <option>Todos os anos</option>
                         <!-- Selecionar por padrão o 'Todos os anos' -->
                         <!-- Popular com anos dos registros do database JSON -->
@@ -452,7 +452,7 @@
             <section class="filters">
                 <div class="filters__group">
                     <label for="editCategoryFilter" class="filters__label">CATEGORIA</label>
-                    <select id="editCategoryFilter" class="filters__input" onchange="applyPageFilters('edit')"">
+                    <select id="editCategoryFilter" class="filters__input" onchange="CGD.applyPageFilters('edit')"">
                         <!-- Selecionar por padrão 'Todas' -->
                         <option>Todas</option>
                         <option>Aluguel</option>
@@ -469,7 +469,7 @@
                 </div>
                 <div class=" filters__group">
                         <label for="editStatusFilter" class="filters__label">STATUS</label>
-                        <select id="editStatusFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                        <select id="editStatusFilter" class="filters__input" onchange="CGD.applyPageFilters('edit')">
                             <!-- Selecionar por padrão o 'Todas' -->
                             <!-- Definir automaticamente com base nos registros do database JSON -->
                             <option>Todas</option>
@@ -477,7 +477,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="editResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
-                    <select id="editResponsibleFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                    <select id="editResponsibleFilter" class="filters__input" onchange="CGD.applyPageFilters('edit')">
                         <!-- Selecionar por padrão o 'Todos' -->
                         <!-- Popular com responsáveis dos registros do database JSON -->
                         <option>Todos</option>
@@ -485,7 +485,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="editSortFilter" class="filters__label">ORDENAR POR</label>
-                    <select id="editSortFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                    <select id="editSortFilter" class="filters__input" onchange="CGD.applyPageFilters('edit')">
                         <!-- Selecionar por padrão o 'Vencimento' -->
                         <option>Vencimento</option>
                         <option>Valor</option>
@@ -495,7 +495,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="editPaymentMethodFilter" class="filters__label">FORMA DE PAGAMENTO</label>
-                    <select id="editPaymentMethodFilter" class="filters__input" onchange="applyPageFilters('edit')">
+                    <select id="editPaymentMethodFilter" class="filters__input" onchange="CGD.applyPageFilters('edit')">
                         <option value="Todos">Todos</option>
                         <option value="Dinheiro">Dinheiro</option>
                         <option value="Cheque">Cheque</option>
@@ -510,9 +510,9 @@
                     <span class="search__icon">🔍</span>
                     <input type="text" class="search__input" id="searchEditInput"
                         placeholder="Digite para buscar por descrição, categoria ou valor..."
-                        oninput="performSearch('edit')">
+                        oninput="CGD.performSearch('edit')">
                 </div>
-                <button class="btn btn--secondary" onclick="clearFilters('edit')">Limpar Filtros</button>
+                <button class="btn btn--secondary" onclick="CGD.clearFilters('edit')">Limpar Filtros</button>
             </section>
 
             <!-- Data Table -->
@@ -547,7 +547,7 @@
                     <span class="page__icon">💵</span>
                     Pagar/Atualizar Despesa
                 </h1>
-                <button class="btn btn--primary" onclick="showModal('add-modal')">
+                <button class="btn btn--primary" onclick="CGD.showModal('add-modal')">
                     ➕ Adicionar Despesa
                 </button>
             </header>
@@ -556,7 +556,7 @@
             <section class="date-selector">
                 <div class="date-selector__group">
                     <label for="pendingMonthSelect" class="date-selector__label">MÊS:</label>
-                    <select id="pendingMonthSelect" class="date-selector__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingMonthSelect" class="date-selector__input" onchange="CGD.applyPageFilters('pending')">
                         <!-- Selecionar por padrão o 'Todos os meses' -->
                         <option>Todos os meses</option>
                         <option>Janeiro</option>
@@ -575,7 +575,7 @@
                 </div>
                 <div class="date-selector__group">
                     <label for="pendingYearSelect" class="date-selector__label">ANO:</label>
-                    <select id="pendingYearSelect" class="date-selector__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingYearSelect" class="date-selector__input" onchange="CGD.applyPageFilters('pending')">
                         <option>Todos os anos</option>
                         <!-- Selecionar por padrão o 'Todos os anos' -->
                         <!-- Popular com anos dos registros do database JSON -->
@@ -618,7 +618,7 @@
             <section class="filters">
                 <div class="filters__group">
                     <label for="pendingCategoryFilter" class="filters__label">CATEGORIA</label>
-                    <select id="pendingCategoryFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingCategoryFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
                         <!-- Selecionar por padrão 'Todas' -->
                         <option>Todas</option>
                         <option>Aluguel</option>
@@ -635,7 +635,7 @@
                 </div>
                 <div class="filters__group">
                     <label for="pendingStatusFilter" class="filters__label">STATUS</label>
-                    <select id="pendingStatusFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingStatusFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
                         <!-- Selecionar por padrão o 'Todas pendentes' -->
                         <!-- Definir automaticamente com base nos registros do database JSON -->
                         <option>Todas pendentes</option>
@@ -643,14 +643,14 @@
                 </div>
                 <div class="filters__group">
                     <label for="pendingResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
-                    <select id="pendingResponsibleFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingResponsibleFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
                         <!-- Popular com responsáveis dos registros do database JSON -->
                         <option>Todos</option>
                     </select>
                 </div>
                 <div class="filters__group">
                     <label for="pendingSortFilter" class="filters__label">ORDENAR POR</label>
-                    <select id="pendingSortFilter" class="filters__input" onchange="applyPageFilters('pending')">
+                    <select id="pendingSortFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
                         <!-- Selecionar por padrão o 'Vencimento' -->
                         <option>Vencimento</option>
                         <option>Valor</option>
@@ -662,9 +662,9 @@
                     <span class="search__icon">🔍</span>
                     <input type="text" class="search__input" id="searchPendingInput"
                         placeholder="Digite para buscar por descrição, categoria ou valor..."
-                        oninput="performSearch('pending')">
+                        oninput="CGD.performSearch('pending')">
                 </div>
-                <button class="btn btn--secondary" onclick="clearFilters('pending')">Limpar Filtros</button>
+                <button class="btn btn--secondary" onclick="CGD.clearFilters('pending')">Limpar Filtros</button>
             </section>
 
             <!-- Data Table -->
@@ -699,7 +699,7 @@
                     <span class="page__icon">💾</span>
                     Exportar/Importar Dados
                 </h1>
-                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                <button class="btn btn--primary" onclick="CGD.navigateTo('dashboard-page')">
                     📊 Voltar ao Dashboard
                 </button>
             </header>
@@ -761,12 +761,12 @@
                             <label class="form__label">Formato de Exportação</label>
                             <div class="format-options">
                                 <div class="format-option selected" data-format="json"
-                                    onclick="selectFormat('export', 'json')">
+                                    onclick="CGD.selectFormat('export', 'json')">
                                     <div class="format-option__icon">📄</div>
                                     <div class="format-option__name">JSON</div>
                                     <div class="format-option__description">Backup completo</div>
                                 </div>
-                                <div class="format-option" data-format="csv" onclick="selectExportFormat('csv')">
+                                <div class="format-option" data-format="csv" onclick="CGD.selectFormat('export', 'csv')">
                                     <div class="format-option__icon">📊</div>
                                     <div class="format-option__name">CSV</div>
                                     <div class="format-option__description">Para planilhas</div>
@@ -781,7 +781,7 @@
                             <!-- <input type="text" id="exportPath" name="exportPath" class="form__input"
                                 value="C:\Users\[nome do usuário]]\Documents\CGD\backups"
                                 placeholder="Escolha onde salvar o arquivo...">
-                            <button type="button" class="btn btn--secondary" onclick="chooseExportPath()"
+                            <button type="button" class="btn btn--secondary" onclick="CGD.chooseExportPath()"
                                 style="margin-top: 8px;">
                                 📁 Escolher Pasta
                             </button> -->
@@ -797,7 +797,7 @@
                         </div>
 
                         <!-- Botão de Exportação -->
-                        <button type="button" class="btn btn--backup" onclick="performExport()">
+                        <button type="button" class="btn btn--backup" onclick="CGD.performExport()">
                             📤 Exportar Dados
                         </button>
                     </form>
@@ -820,13 +820,13 @@
                             <label class="form__label">Formato de Importação</label>
                             <div class="format-options">
                                 <div class="format-option selected" data-format="json"
-                                    onclick="selectFormat('import', 'json')">
+                                    onclick="CGD.selectFormat('import', 'json')">
                                     <div class="format-option__icon">📄</div>
                                     <div class="format-option__name">JSON</div>
                                     <div class="format-option__description">Backup completo</div>
                                 </div>
                                 <!--
-                                <div class="format-option" data-format="csv" onclick="selectFormat('import', 'csv')">
+                                <div class="format-option" data-format="csv" onclick="CGD.selectFormat('import', 'csv')">
                                     <div class="format-option__icon">📊</div>
                                     <div class="format-option__name">CSV</div>
                                     <div class="format-option__description">Dados de planilha</div>
@@ -839,7 +839,7 @@
                         <div class="form__group">
                             <label for="importFile" class="form__label">Selecionar Arquivo</label>
                             <input type="file" id="importFile" name="importFile" class="form__input form__input--file"
-                                accept=".json,.csv" onchange="validateImportFile()">
+                                accept=".json,.csv" onchange="CGD.validateImportFile()">
                         </div>
 
                         <!-- Opções de Importação -->
@@ -847,12 +847,12 @@
                             <label class="form__label">Modo de Importação</label>
                             <div class="format-options">
                                 <div class="format-option selected" data-mode="replace"
-                                    onclick="selectImportMode('replace')">
+                                    onclick="CGD.selectImportMode('replace')">
                                     <div class="format-option__icon">🔄</div>
                                     <div class="format-option__name">Substituir</div>
                                     <div class="format-option__description">Apagar dados atuais</div>
                                 </div>
-                                <div class="format-option" data-mode="merge" onclick="selectImportMode('merge')">
+                                <div class="format-option" data-mode="merge" onclick="CGD.selectImportMode('merge')">
                                     <div class="format-option__icon">➕</div>
                                     <div class="format-option__name">Mesclar</div>
                                     <div class="format-option__description">Adicionar aos dados</div>
@@ -873,7 +873,7 @@
                         </div>
 
                         <!-- Botão de Importação -->
-                        <button type="button" class="btn btn--restore" onclick="showModal('restore-modal')">
+                        <button type="button" class="btn btn--restore" onclick="CGD.showModal('restore-modal')">
                             📥 Importar Dados
                         </button>
                     </form>
@@ -889,7 +889,7 @@
                     <span class="page__icon">📋</span>
                     Relatórios
                 </h1>
-                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                <button class="btn btn--primary" onclick="CGD.navigateTo('dashboard-page')">
                     📊 Voltar ao Dashboard
                 </button>
             </header>
@@ -939,15 +939,15 @@
             <section class="filters">
                 <div class="filters__group">
                     <label for="reportStartDate" class="filters__label">DATA INICIAL</label>
-                    <input type="date" id="reportStartDate" class="filters__input" onchange="applyReportFilters()">
+                    <input type="date" id="reportStartDate" class="filters__input" onchange="CGD.applyReportFilters()">
                 </div>
                 <div class="filters__group">
                     <label for="reportEndDate" class="filters__label">DATA FINAL</label>
-                    <input type="date" id="reportEndDate" class="filters__input" onchange="applyReportFilters()">
+                    <input type="date" id="reportEndDate" class="filters__input" onchange="CGD.applyReportFilters()">
                 </div>
                 <div class="filters__group">
                     <label for="reportCategoryFilter" class="filters__label">CATEGORIA</label>
-                    <select id="reportCategoryFilter" class="filters__input" onchange="applyReportFilters()">
+                    <select id="reportCategoryFilter" class="filters__input" onchange="CGD.applyReportFilters()">
                         <option>Todas</option>
                         <option>Aluguel</option>
                         <option>Condomínio</option>
@@ -963,12 +963,12 @@
                 </div>
                 <div class="filters__group">
                     <label for="reportResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
-                    <select id="reportResponsibleFilter" class="filters__input" onchange="applyReportFilters()">
+                    <select id="reportResponsibleFilter" class="filters__input" onchange="CGD.applyReportFilters()">
                         <option>Todos</option>
                         <!-- Populated dynamically from database -->
                     </select>
                 </div>
-                <button class="btn btn--secondary" onclick="clearReportFilters()">Limpar Filtros</button>
+                <button class="btn btn--secondary" onclick="CGD.clearReportFilters(">Limpar Filtros</button>
             </section>
 
             <!-- Tipos de Relatórios -->
@@ -991,7 +991,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('monthly')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('monthly')">
                                 📊 Gerar Relatório
                             </button>
                         </footer>
@@ -1013,7 +1013,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('category')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('category')">
                                 🏷️ Gerar Relatório
                             </button>
                         </footer>
@@ -1035,7 +1035,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('responsible')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('responsible')">
                                 👥 Gerar Relatório
                             </button>
                         </footer>
@@ -1057,7 +1057,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('trends')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('trends')">
                                 📉 Gerar Relatório
                             </button>
                         </footer>
@@ -1079,7 +1079,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('complete')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('complete')">
                                 📄 Gerar Relatório
                             </button>
                         </footer>
@@ -1101,7 +1101,7 @@
                             </ul>
                         </div>
                         <footer class="card__footer">
-                            <button class="btn btn--primary" onclick="generateReport('overdue')">
+                            <button class="btn btn--primary" onclick="CGD.generateReport('overdue')">
                                 ⚠️ Gerar Relatório
                             </button>
                         </footer>
@@ -1119,7 +1119,7 @@
                     <div class="form__group">
                         <h4 class="form__label">Formato do Arquivo</h4>
                         <div class="format-options">
-                            <div class="format-option selected" data-format="pdf" onclick="selectReportFormat('pdf')">
+                            <div class="format-option selected" data-format="pdf" onclick="CGD.selectReportFormat('pdf')">
                                 <div class="format-option__icon">📄</div>
                                 <div class="format-option__name">PDF</div>
                                 <div class="format-option__description">Recomendado</div>
@@ -1158,7 +1158,7 @@
                     <span class="page__icon">ℹ️</span>
                     Sobre o App
                 </h1>
-                <button class="btn btn--primary" onclick="navigateTo('dashboard-page')">
+                <button class="btn btn--primary" onclick="CGD.navigateTo('dashboard-page')">
                     📊 Voltar ao Dashboard
                 </button>
             </header>
@@ -1310,7 +1310,7 @@
                 </div>
 
                 <footer class="modal__footer modal__footer--welcome">
-                    <button type="button" class="btn btn--welcome" onclick="closeModal('welcomeModal')">
+                    <button type="button" class="btn btn--welcome" onclick="CGD.closeModal('welcomeModal')">
                         Entendi, vamos começar!
                     </button>
                 </footer>
@@ -1323,7 +1323,7 @@
                 <header class="modal__header modal__header--view">
                     <div class="modal__icon modal__icon--large">👁️</div>
                     <h3 class="modal__title">Detalhes da Despesa</h3>
-                    <!-- <span class="modal__close" onclick="closeModal('view-modal')">&times;</span> -->
+                    <!-- <span class="modal__close" onclick="CGD.closeModal('view-modal')">&times;</span> -->
                 </header>
                 <section class="modal__body">
                     <p class="confirmation__question">Todas as informações sobre a despesa selecionada:</p>
@@ -1377,7 +1377,7 @@
                     </div>
                 </section>
                 <footer class="modal__footer">
-                    <button class="btn btn--primary" onclick="closeModal('view-modal')">OK</button>
+                    <button class="btn btn--primary" onclick="CGD.closeModal('view-modal')">OK</button>
                 </footer>
             </div>
         </div>
@@ -1399,7 +1399,7 @@
                                 class="form__label form__label--required">Nome/Descrição</label>
                             <input type="text" id="expenseDescription" name="descricao" class="form__input" required
                                 placeholder="Ex: Conta de luz (fatura de Maio)..."
-                                oninput="validateExpenseDescription()">
+                                oninput="">
                         </div>
 
                         <!-- Category and Responsible -->
@@ -1407,7 +1407,7 @@
                             <div class="form__group">
                                 <label for="expenseCategory" class="form__label form__label--required">Categoria</label>
                                 <select id="expenseCategory" name="categoria" class="form__input" required
-                                    onchange="validateExpenseCategory()">
+                                    onchange="">
                                     <option value="">Escolha...</option>
                                     <option value="Aluguel">Aluguel</option>
                                     <option value="Condomínio">Condomínio</option>
@@ -1426,7 +1426,7 @@
                                     class="form__label form__label--required">Responsável</label>
                                 <input type="text" id="expenseResponsible" name="responsavel" class="form__input"
                                     required placeholder="Ex: João, Maria, Coletiva..."
-                                    oninput="validateExpenseResponsible()">
+                                    oninput="">
                             </div>
                         </div>
 
@@ -1435,13 +1435,13 @@
                             <div class="form__group">
                                 <label for="expenseValue" class="form__label form__label--required">Valor (R$)</label>
                                 <input type="number" id="expenseValue" name="valorTotal" class="form__input" step="0.01"
-                                    min="0.01" required placeholder="0,00" oninput="generateInstallmentsTable('add')">
+                                    min="0.01" required placeholder="0,00" oninput="CGD.generateInstallmentsTable('add')">
                             </div>
                             <div class="form__group">
                                 <label for="expenseInstallments" class="form__label form__label--required">Total de
                                     Parcelas</label>
                                 <input type="number" id="expenseInstallments" name="totalParcelas" class="form__input"
-                                    min="1" max="100" value="1" required oninput="generateInstallmentsTable('add')">
+                                    min="1" max="100" value="1" required oninput="CGD.generateInstallmentsTable('add')">
                                 <div class="form__warning" id="installmentsWarning">
                                     <!-- Máximo de 100 parcelas permitidas -->>
                                 </div>
@@ -1482,10 +1482,10 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('add-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('add-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--save" onclick="saveExpense()">
+                    <button type="button" class="btn btn--save" onclick="CGD.saveExpense()">
                         💾 Salvar
                     </button>
                 </footer>
@@ -1544,14 +1544,14 @@
                                     (R$)</label>
                                 <input type="number" id="editExpenseValue" name="valorTotal" class="form__input"
                                     step="0.01" min="0.01" required placeholder="0,00"
-                                    oninput="generateInstallmentsTable('edit', { expense: despesaSelecionada })">
+                                    oninput="CGD.generateInstallmentsTable('edit', { expense: despesaSelecionada })">
                             </div>
                             <div class="form__group">
                                 <label for="editExpenseInstallments" class="form__label form__label--required">Total de
                                     Parcelas</label>
                                 <input type="number" id="editExpenseInstallments" name="totalParcelas"
                                     class="form__input" min="1" max="100" value="1" required
-                                    oninput="generateInstallmentsTable('edit', { expense: despesaSelecionada })">
+                                    oninput="CGD.generateInstallmentsTable('edit', { expense: despesaSelecionada })">
                                 <div class="form__warning" id="editInstallmentsWarning">
                                     <!-- Máximo de 100 parcelas permitidas -->>
                                 </div>
@@ -1591,10 +1591,10 @@
                     </form>
                 </div>
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('edit-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('edit-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--edit" onclick="updateExpense()">
+                    <button type="button" class="btn btn--edit" onclick="CGD.updateExpense()">
                         ✏️ Alterar
                     </button>
                 </footer>
@@ -1647,7 +1647,7 @@
                         <label for="paymentMethodSelect" class="form__label form__label--required">Forma de
                             Pagamento</label>
                         <select id="paymentMethodSelect" class="form__input" required
-                            onchange="validatePaymentButton()">
+                            onchange="CGD.validatePaymentButton()">
                             <option value="">Escolha...</option>
                             <option value="Dinheiro">Dinheiro</option>
                             <option value="Cheque">Cheque</option>
@@ -1661,11 +1661,11 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('payment-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('payment-modal')">
                         ❌ Cancelar
                     </button>
                     <button type="button" id="confirmPaymentBtn" class="btn btn--confirm-payment"
-                        onclick="confirmPayment()" disabled>
+                        onclick="CGD.confirmPayment()" disabled>
                         ✅ Sim, Marcar como Pago
                     </button>
                 </footer>
@@ -1726,7 +1726,7 @@
                                     (R$)</label>
                                 <!-- Preenchido automaticamente com base nos registros do database JSON -->
                                 <input id="updateValue" name="valor" type="number" step="0.01" min="0"
-                                    class="form__input" required oninput="generateInstallmentsTable('update')">
+                                    class="form__input" required oninput="CGD.generateInstallmentsTable('update')">
                             </div>
 
                             <div class="form__group">
@@ -1734,7 +1734,7 @@
                                     Parcelas</label>
                                 <!-- Selecionar por padrão '1' -->
                                 <input id="updateInstallments" name="parcelas" type="number" min="1" value="1"
-                                    class="form__input" required oninput="generateInstallmentsTable('update')">
+                                    class="form__input" required oninput="CGD.generateInstallmentsTable('update')">
                             </div>
                         </div>
 
@@ -1764,10 +1764,10 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('update-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('update-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--update" onclick="confirmUpdate()">
+                    <button type="button" class="btn btn--update" onclick="CGD.confirmUpdate()">
                         🔄 Atualizar
                     </button>
                 </footer>
@@ -1828,10 +1828,10 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('delete-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('delete-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--confirm-delete" onclick="confirmDelete()">
+                    <button type="button" class="btn btn--confirm-delete" onclick="CGD.confirmDelete()">
                         🗑️ Sim, Excluir Permanentemente
                     </button>
                 </footer>
@@ -1867,10 +1867,10 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('restore-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('restore-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--restore" onclick="performImport()">
+                    <button type="button" class="btn btn--restore" onclick="CGD.performImport()">
                         📁 Proseguir com a Restauração
                     </button>
                 </footer>
@@ -1900,10 +1900,10 @@
                 </div>
 
                 <footer class="modal__footer">
-                    <button type="button" class="btn btn--cancel" onclick="closeModal('exit-modal')">
+                    <button type="button" class="btn btn--cancel" onclick="CGD.closeModal('exit-modal')">
                         ❌ Cancelar
                     </button>
-                    <button type="button" class="btn btn--confirm-exit" onclick="confirmExit()">
+                    <button type="button" class="btn btn--confirm-exit" onclick="CGD.confirmExit()">
                         🚪 Sim, Sair do Sistema
                     </button>
                 </footer>
@@ -1911,7 +1911,7 @@
         </div>
 
         <!-- ===== SCRIPTS ===== -->
-        <script src="assets/js/main.js"></script>
+        <script type="module" src="assets/js/app.js"></script>
 </body>
 
 </html>
