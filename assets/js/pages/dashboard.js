@@ -25,7 +25,12 @@ export function populateYearSelect(currentYear) {
     const yearSelect = document.getElementById('yearSelect');
     yearSelect.innerHTML = '';
 
-    const years = [...new Set(expenses.map(exp => parseDate(exp.vencimento).getFullYear()))];
+    const years = [...new Set(
+        expenses
+            .map(exp => parseDate(exp.vencimento))
+            .filter(d => d && !isNaN(d))
+            .map(d => d.getFullYear())
+    )];
     if (!years.includes(currentYear)) years.push(currentYear);
     years.sort((a, b) => a - b);
 
@@ -95,7 +100,12 @@ export function populateFilter(filterId, filterType, page = null) {
             break;
 
         case 'year': {
-            const years = [...new Set(expenses.map(exp => parseDate(exp.vencimento).getFullYear()))];
+            const years = [...new Set(
+                expenses
+                    .map(exp => parseDate(exp.vencimento))
+                    .filter(d => d && !isNaN(d))
+                    .map(d => d.getFullYear())
+            )];
             years.sort((a, b) => b - a);
             filter.innerHTML = '<option value="Todos os anos">Todos os anos</option>';
             years.forEach(year => {
@@ -352,17 +362,24 @@ export function renderTable(pageType, filteredExpenses = null) {
             sortFilterId: 'pendingSortFilter',
             emptyMessage: 'Nenhuma despesa pendente encontrada para os filtros selecionados.',
             actions: expense => {
-                const status       = getExpenseStatus(expense);
+                const status        = getExpenseStatus(expense);
                 const isTransferred = expense.transferenciaEfetuda === 'sim';
+                const isPaid        = expense.pagamentoEfetuado === 'sim';
+
+                // Pode pagar: qualquer despesa não paga e não transferida (aberta OU vencida)
+                const canPay    = !isPaid && !isTransferred;
+                // Pode atualizar (renegociar prazo): apenas vencidas e não transferidas
+                const canUpdate = status === 'Vencido' && !isTransferred;
+
                 return `
                     <button class="btn btn--pay"
-                        ${(status === 'Vencido' || isTransferred) ? 'disabled' : ''}
-                        onclick="${isTransferred ? '' : `CGD.payExpense(${expense.id})`}"
-                        title="Pagar Despesa">💵</button>
+                        ${!canPay ? 'disabled' : ''}
+                        onclick="${canPay ? `CGD.payExpense(${expense.id})` : ''}"
+                        title="${canPay ? 'Pagar Despesa' : 'Não disponível'}">💵</button>
                     <button class="btn btn--update"
-                        ${(status === 'Aberto' || isTransferred) ? 'disabled' : ''}
-                        onclick="${isTransferred ? '' : `CGD.updateExpenseModal(${expense.id})`}"
-                        title="Atualizar Despesa">🔄</button>`;
+                        ${!canUpdate ? 'disabled' : ''}
+                        onclick="${canUpdate ? `CGD.updateExpenseModal(${expense.id})` : ''}"
+                        title="${canUpdate ? 'Atualizar prazo' : 'Apenas despesas vencidas'}">🔄</button>`;
             }
         }
     };

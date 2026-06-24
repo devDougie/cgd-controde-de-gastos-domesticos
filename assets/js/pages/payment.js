@@ -173,13 +173,14 @@ export function deleteExpense(expenseId) {
 
     setExpenseIdToDelete(expenseId);
 
-    document.getElementById('deleteDescription').textContent  = expense.descricao;
-    document.getElementById('deleteCategory').textContent     = expense.categoria;
-    document.getElementById('deleteResponsible').textContent  = expense.responsavel;
-    document.getElementById('deleteValue').textContent        = 'R$ ' + expense.valorOriginal.toFixed(2).replace('.', ',');
-    document.getElementById('deleteDue').textContent          = formatDate(expense.vencimento);
-    document.getElementById('deleteInstallment').textContent  = `${expense.parcelaAtual}/${expense.totalParcelas}`;
-    document.getElementById('deleteStatus').textContent       = getExpenseStatus(expense);
+    document.getElementById('deleteDescription').textContent   = expense.descricao;
+    document.getElementById('deleteCategory').textContent      = expense.categoria;
+    document.getElementById('deleteResponsible').textContent   = expense.responsavel;
+    document.getElementById('deleteValue').textContent         = 'R$ ' + expense.valorOriginal.toFixed(2).replace('.', ',');
+    document.getElementById('deleteDue').textContent           = formatDate(expense.vencimento);
+    document.getElementById('deleteInstallment').textContent   = `${expense.parcelaAtual}/${expense.totalParcelas}`;
+    document.getElementById('deleteStatus').textContent        = getExpenseStatus(expense);
+    document.getElementById('deleteFormaPagamento').textContent = expense.formaPagamento || 'N/A';
 
     showModal('delete-modal');
 }
