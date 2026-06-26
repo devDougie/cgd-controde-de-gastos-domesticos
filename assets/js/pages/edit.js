@@ -3,7 +3,7 @@
 
 import { expenses, expenseIdToEdit, setExpenseIdToEdit, validationConfigs } from '../core/state.js';
 import { saveExpensesToStorage } from '../core/storage.js';
-import { parseDate } from '../utils/formatters.js';
+import { parseDate, generateGroupId } from '../utils/formatters.js';
 import { getExpenseStatus } from '../utils/expense-status.js';
 import { validateForm } from '../utils/validators.js';
 import { showModal, closeModal, refreshCurrentPage } from '../components/sidebar.js';
@@ -29,6 +29,7 @@ export function createExpenseInstallments(formData) {
     const valorParcela    = formData.valorTotal / formData.totalParcelas;
     const installmentRows = document.querySelectorAll('#installmentsTableBody tr');
     const baseId          = Date.now();
+    const groupId         = generateGroupId();
 
     for (let i = 0; i < formData.totalParcelas; i++) {
         const row        = installmentRows[i];
@@ -38,6 +39,7 @@ export function createExpenseInstallments(formData) {
 
         installments.push({
             id:                  baseId + i,
+            groupId,
             descricao:           formData.descricao,
             categoria:           formData.categoria,
             responsavel:         formData.responsavel,
@@ -141,9 +143,11 @@ export function editExpense(expenseId) {
     if (isFirstInstallment) {
         setTimeout(() => {
             const parcelas = expenses.filter(exp =>
-                exp.descricao   === expense.descricao &&
-                exp.responsavel === expense.responsavel &&
-                exp.totalParcelas === expense.totalParcelas
+                exp.groupId
+                    ? exp.groupId === expense.groupId
+                    : exp.descricao   === expense.descricao &&
+                      exp.responsavel === expense.responsavel &&
+                      exp.totalParcelas === expense.totalParcelas
             ).sort((a, b) => a.parcelaAtual - b.parcelaAtual);
 
             const rows = document.querySelectorAll('#editInstallmentsTableBody tr');
@@ -186,9 +190,11 @@ export function updateExpense() {
 
     if (isFirstInstallment) {
         const grupoAtual = expenses.filter(exp =>
-            exp.descricao   === expense.descricao &&
-            exp.responsavel === expense.responsavel &&
-            exp.totalParcelas === expense.totalParcelas
+            exp.groupId
+                ? exp.groupId === expense.groupId
+                : exp.descricao   === expense.descricao &&
+                  exp.responsavel === expense.responsavel &&
+                  exp.totalParcelas === expense.totalParcelas
         ).sort((a, b) => a.parcelaAtual - b.parcelaAtual);
 
         if (newTotalParcelas !== expense.totalParcelas) {
@@ -323,9 +329,11 @@ export function generateInstallmentsTable(context, options = {}) {
     if (context === 'edit' && expense && expense.idParcela !== null) {
         const grupoCompleto = expenses
             .filter(exp =>
-                exp.descricao     === expense.descricao &&
-                exp.responsavel   === expense.responsavel &&
-                exp.totalParcelas === expense.totalParcelas
+                exp.groupId
+                    ? exp.groupId === expense.groupId
+                    : exp.descricao     === expense.descricao &&
+                      exp.responsavel   === expense.responsavel &&
+                      exp.totalParcelas === expense.totalParcelas
             )
             .sort((a, b) => a.parcelaAtual - b.parcelaAtual);
 

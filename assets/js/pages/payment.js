@@ -5,7 +5,7 @@ import { expenses, expenseIdToPay, expenseIdToUpdate, expenseIdToDelete,
          setExpenseIdToPay, setExpenseIdToUpdate, setExpenseIdToDelete,
          filterExpenses, validationConfigs } from '../core/state.js';
 import { saveExpensesToStorage } from '../core/storage.js';
-import { parseDate, formatDate } from '../utils/formatters.js';
+import { parseDate, formatDate, generateGroupId } from '../utils/formatters.js';
 import { getExpenseStatus } from '../utils/expense-status.js';
 import { validateForm } from '../utils/validators.js';
 import { showModal, closeModal, refreshCurrentPage } from '../components/sidebar.js';
@@ -135,9 +135,11 @@ export function confirmUpdate() {
 
     const baseId        = Date.now();
     const valorParcela  = parseFloat((valorTotal / totalParcelas).toFixed(2));
+    const groupId       = generateGroupId();
 
     const newExpenses = Array.from({ length: totalParcelas }, (_, i) => ({
         id:                  baseId + i,
+        groupId,
         descricao:           parent.descricao,
         categoria:           parent.categoria,
         responsavel:         parent.responsavel,
@@ -190,18 +192,17 @@ export function confirmDelete() {
         const expense = expenses.find(exp => exp.id === expenseIdToDelete);
         if (!expense) { alert('Despesa não encontrada!'); return; }
 
-        const parcelasDoGrupo = expenses.filter(exp =>
-            exp.descricao     === expense.descricao &&
-            exp.responsavel   === expense.responsavel &&
-            exp.totalParcelas === expense.totalParcelas
-        );
-        const totalExcluidas = parcelasDoGrupo.length;
+        const isSameGroup = (exp) =>
+            expense.groupId
+                ? exp.groupId === expense.groupId
+                : exp.descricao     === expense.descricao &&
+                  exp.responsavel   === expense.responsavel &&
+                  exp.totalParcelas === expense.totalParcelas;
 
-        filterExpenses(exp =>
-            !(exp.descricao     === expense.descricao &&
-              exp.responsavel   === expense.responsavel &&
-              exp.totalParcelas === expense.totalParcelas)
-        );
+        const parcelasDoGrupo = expenses.filter(isSameGroup);
+        const totalExcluidas  = parcelasDoGrupo.length;
+
+        filterExpenses(exp => !isSameGroup(exp));
 
         saveExpensesToStorage();
         refreshCurrentPage();

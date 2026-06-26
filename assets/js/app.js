@@ -2,7 +2,8 @@
 // Inicialização do sistema e namespace global CGD (expõe funções ao HTML)
 
 import { expenses, expenseIdToUpdate, setValidationConfigs } from './core/state.js';
-import { loadExpensesFromStorage, saveExpensesToStorage }    from './core/storage.js';
+import { loadExpensesFromStorage, saveExpensesToStorage,
+         migrateExpensesIfNeeded }                          from './core/storage.js';
 import { parseDate }                                         from './utils/formatters.js';
 import { validateForm }                                      from './utils/validators.js';
 
@@ -161,6 +162,11 @@ function initializeSystem() {
     setValidationConfigs(buildValidationConfigs());
 
     loadExpensesFromStorage();
+
+    // Migração: garante que todos os dados legados recebam groupId
+    const wasMigrated = migrateExpensesIfNeeded();
+    if (wasMigrated) saveExpensesToStorage();
+
     setCurrentDate();
     populateFilters();
     setupAllFiltersListeners();

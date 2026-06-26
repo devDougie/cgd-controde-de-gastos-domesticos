@@ -38,3 +38,7 @@ export function dayBefore(date) {
 export function toYMD(date) {
     return date.toISOString().split('T')[0];
 }
+
+export function generateGroupId() {
+    return `grp_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
