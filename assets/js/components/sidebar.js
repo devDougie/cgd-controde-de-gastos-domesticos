@@ -1,8 +1,6 @@
 // ===== 🧭 COMPONENTS — SIDEBAR =====
 // Navegação entre páginas, tema e modais
 
-import { currentFilters } from '../core/state.js';
-
 // ── Tema ──────────────────────────────────────────────────────────────────────
 
 export function toggleTheme() {
@@ -64,51 +62,31 @@ export function closeModal(modalId) {
     }
 }
 
-// ── Navegação ─────────────────────────────────────────────────────────────────
+// ── Navegação (delega ao router) ──────────────────────────────────────────────
 
+/**
+ * Navega para uma página usando o router dinâmico.
+ * O router carrega o HTML via fetch, injeta no #page-container
+ * e executa o inicializador registrado para a página.
+ */
 export function navigateTo(pageId) {
-    document.querySelectorAll('.nav__item').forEach(item => item.classList.remove('nav__item--active'));
-    const navItem = document.querySelector(`[data-page="${pageId}"]`);
-    if (navItem) navItem.classList.add('nav__item--active');
-
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('page--active'));
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('page--active');
-        targetPage.scrollTo(0, 0);
-        window.scrollTo(0, 0);
-    }
-
-    import('../pages/dashboard.js').then(mod => {
-        const { updateSummary, renderTable, clearFilters } = mod;
-
-        if (pageId === 'dashboard-page') {
-            clearFilters('dashboard');
-            updateSummary('dashboard');
-            renderTable('dashboard');
-        } else if (pageId === 'edit-page') {
-            clearFilters('edit');
-            updateSummary('edit');
-            renderTable('edit');
-        } else if (pageId === 'payment-page') {
-            clearFilters('pending');
-            updateSummary('pending');
-            renderTable('pending');
-        } else if (pageId === 'backup-page') {
-            import('../pages/backup.js').then(({ resetBackupForms, selectFormat, generateDefaultBackupFileName, selectImportMode }) => {
-                updateSummary('backup');
-                resetBackupForms();
-                selectFormat('export', 'json');
-                generateDefaultBackupFileName();
-                selectFormat('import', 'json');
-                selectImportMode('replace');
-            });
-        }
+    // Importação lazy do router para evitar dependência circular
+    import('../core/router.js').then(({ navigateTo: routerNavigateTo }) => {
+        routerNavigateTo(pageId);
+    }).catch(err => {
+        console.error('[Sidebar] Falha ao carregar o router:', err);
     });
 }
 
+// ── Refresh da página ativa ───────────────────────────────────────────────────
+
 export function refreshCurrentPage() {
-    const activePage = document.querySelector('.page.page--active');
+    // Com o router, a "página ativa" é o conteúdo atual do #page-container.
+    // Identificamos pela primeira section dentro do container.
+    const container = document.getElementById('page-container');
+    if (!container) return;
+
+    const activePage = container.querySelector('.page');
     if (!activePage) return;
 
     import('../pages/dashboard.js').then(({ updateSummary, renderTable, populateFilters }) => {
@@ -129,6 +107,8 @@ export function refreshCurrentPage() {
         }
     });
 }
+
+// ── Saída ─────────────────────────────────────────────────────────────────────
 
 export function confirmExit() {
     if (confirm('Tem certeza que deseja sair do sistema?')) {

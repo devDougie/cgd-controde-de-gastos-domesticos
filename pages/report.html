@@ -1,0 +1,266 @@
+<section id="report-page" class="page">
+    <!-- Page Header -->
+    <header class="page__header">
+        <h1 class="page__title">
+            <span class="page__icon">📋</span>
+            Relatórios
+        </h1>
+        <button class="btn btn--primary" onclick="CGD.navigateTo('dashboard-page')">
+            📊 Voltar ao Dashboard
+        </button>
+    </header>
+
+    <!-- Informações Gerais -->
+    <section class="info-card">
+        <header class="info-card__header">
+            <span class="info-card__icon">💡</span>
+            <h3 class="info-card__title">Geração de Relatórios</h3>
+        </header>
+        <div class="info-card__content">
+            <p>Gere relatórios detalhados de suas despesas em formato PDF para análise, arquivamento ou
+                compartilhamento.</p>
+            <br>
+            <strong>Tipos de relatórios disponíveis:</strong>
+            <ul>
+                <li><strong>Resumo Mensal:</strong> Visão geral das despesas do mês</li>
+                <li><strong>Por Categoria:</strong> Análise detalhada por tipo de despesa</li>
+                <li><strong>Por Responsável:</strong> Gastos organizados por pessoa</li>
+                <li><strong>Análise de Tendências:</strong> Evolução dos gastos ao longo do tempo</li>
+                <li><strong>Relatório Completo:</strong> Todos os dados em formato detalhado</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Estatísticas Rápidas -->
+    <section class="summary">
+        <div class="summary__card summary__card--blue">
+            <div class="summary__value" id="reportTotalPeriodValue">R$ 0,00</div>
+            <div class="summary__label">Total Período</div>
+        </div>
+        <div class="summary__card summary__card--gray">
+            <div class="summary__value" id="reportTotalExpensesCount">0</div>
+            <div class="summary__label">Total Despesas</div>
+        </div>
+        <div class="summary__card summary__card--green">
+            <div class="summary__value" id="reportPaidExpensesCount">0</div>
+            <div class="summary__label">Despesas Pagas</div>
+        </div>
+        <div class="summary__card summary__card--orange">
+            <div class="summary__value" id="reportPendingExpensesCount">0</div>
+            <div class="summary__label">Despesas Pendentes</div>
+        </div>
+    </section>
+
+    <!-- Filtros para Relatórios -->
+    <section class="filters">
+        <div class="filters__group">
+            <label for="reportStartDate" class="filters__label">DATA INICIAL</label>
+            <input type="date" id="reportStartDate" class="filters__input" onchange="CGD.applyReportFilters()">
+        </div>
+        <div class="filters__group">
+            <label for="reportEndDate" class="filters__label">DATA FINAL</label>
+            <input type="date" id="reportEndDate" class="filters__input" onchange="CGD.applyReportFilters()">
+        </div>
+        <div class="filters__group">
+            <label for="reportCategoryFilter" class="filters__label">CATEGORIA</label>
+            <select id="reportCategoryFilter" class="filters__input" onchange="CGD.applyReportFilters()">
+                <option>Todas</option>
+                <option>Aluguel</option>
+                <option>Condomínio</option>
+                <option>Serviços</option>
+                <option>Impostos</option>
+                <option>Seguro</option>
+                <option>Compras</option>
+                <option>Empréstimo</option>
+                <option>Financiamento</option>
+                <option>Consórcio</option>
+                <option>Outra</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="reportResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
+            <select id="reportResponsibleFilter" class="filters__input" onchange="CGD.applyReportFilters()">
+                <option>Todos</option>
+                <!-- Populated dynamically from database -->
+            </select>
+        </div>
+        <button class="btn btn--secondary" onclick="CGD.clearReportFilters(">Limpar Filtros</button>
+    </section>
+
+    <!-- Tipos de Relatórios -->
+    <section class="report-types">
+        <div class="report-grid">
+            <!-- Relatório Resumo Mensal -->
+            <div class="card card--report">
+                <header class="card__header">
+                    <span class="card__icon">📈</span>
+                    <h3 class="card__title">Resumo Mensal</h3>
+                </header>
+                <div class="card__body">
+                    <p>Relatório completo com totais, gráficos e principais estatísticas do período selecionado.</p>
+                    <ul>
+                        <li>• Gráfico de despesas por categoria</li>
+                        <li>• Resumo de valores pagos vs pendentes</li>
+                        <li>• Lista de despesas vencidas</li>
+                        <li>• Projeções para próximo mês</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('monthly')">
+                        📊 Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+
+            <!-- Relatório por Categoria -->
+            <div class="card card--report">
+                <header class="card__header">
+                    <span class="card__icon">🏷️</span>
+                    <h3 class="card__title">Por Categoria</h3>
+                </header>
+                <div class="card__body">
+                    <p>Análise detalhada dos gastos organizados por categoria de despesa.</p>
+                    <ul>
+                        <li>• Ranking das categorias mais custosas</li>
+                        <li>• Percentual de cada categoria</li>
+                        <li>• Comparativo com meses anteriores</li>
+                        <li>• Recomendações de otimização</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('category')">
+                        🏷️ Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+
+            <!-- Relatório por Responsável -->
+            <div class="card card--report">
+                <header class="card__header">
+                    <span class="card__icon">👥</span>
+                    <h3 class="card__title">Por Responsável</h3>
+                </header>
+                <div class="card__body">
+                    <p>Distribuição dos gastos por pessoa responsável, ideal para controle familiar.</p>
+                    <ul>
+                        <li>• Gastos individuais detalhados</li>
+                        <li>• Percentual de participação</li>
+                        <li>• Histórico de pagamentos</li>
+                        <li>• Divisão de responsabilidades</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('responsible')">
+                        👥 Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+
+            <!-- Análise de Tendências -->
+            <div class="card card--report">
+                <header class="card__header">
+                    <span class="card__icon">📉</span>
+                    <h3 class="card__title">Análise de Tendências</h3>
+                </header>
+                <div class="card__body">
+                    <p>Evolução dos gastos ao longo do tempo com projeções e insights.</p>
+                    <ul>
+                        <li>• Gráficos de evolução temporal</li>
+                        <li>• Sazonalidade dos gastos</li>
+                        <li>• Projeções futuras</li>
+                        <li>• Alertas de tendências</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('trends')">
+                        📉 Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+
+            <!-- Relatório Completo -->
+            <div class="card card--report card--complete">
+                <header class="card__header">
+                    <span class="card__icon">📄</span>
+                    <h3 class="card__title">Relatório Completo</h3>
+                </header>
+                <div class="card__body">
+                    <p>Relatório abrangente com todos os dados detalhados e análises disponíveis.</p>
+                    <ul>
+                        <li>• Todos os tipos de análise</li>
+                        <li>• Dados completos do período</li>
+                        <li>• Gráficos e tabelas detalhadas</li>
+                        <li>• Documento para arquivamento</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('complete')">
+                        📄 Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+
+            <!-- Relatório de Inadimplência -->
+            <div class="card card--report card--warning">
+                <header class="card__header">
+                    <span class="card__icon">⚠️</span>
+                    <h3 class="card__title">Inadimplência</h3>
+                </header>
+                <div class="card__body">
+                    <p>Relatório focado em despesas vencidas e em atraso para controle de pagamentos.</p>
+                    <ul>
+                        <li>• Lista de despesas em atraso</li>
+                        <li>• Dias de atraso por despesa</li>
+                        <li>• Impacto financeiro total</li>
+                        <li>• Cronograma de regularização</li>
+                    </ul>
+                </div>
+                <footer class="card__footer">
+                    <button class="btn btn--primary" onclick="CGD.generateReport('overdue')">
+                        ⚠️ Gerar Relatório
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configurações do Relatório -->
+    <section class="card">
+        <header class="card__header">
+            <span class="card__icon">⚙️</span>
+            <h3 class="card__title">Configurações do Relatório</h3>
+        </header>
+        <div class="card__body">
+            <div class="form__group">
+                <h4 class="form__label">Formato do Arquivo</h4>
+                <div class="format-options">
+                    <div class="format-option selected" data-format="pdf" onclick="CGD.selectReportFormat('pdf')">
+                        <div class="format-option__icon">📄</div>
+                        <div class="format-option__name">PDF</div>
+                        <div class="format-option__description">Recomendado</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form__group">
+                <h4 class="form__label">Incluir Gráficos</h4>
+                <label class="checkbox-option">
+                    <input type="checkbox" id="includeChartsOption" checked>
+                    <span class="checkbox-option__text">Incluir gráficos e visualizações</span>
+                </label>
+            </div>
+
+            <div class="form__group">
+                <h4 class="form__label">Detalhamento</h4>
+                <label class="radio-option">
+                    <input type="radio" name="reportDetailLevel" value="summary" checked>
+                    <span class="radio-option__text">Resumido</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="reportDetailLevel" value="detailed">
+                    <span class="radio-option__text">Detalhado</span>
+                </label>
+            </div>
+        </div>
+    </section>
+</section>

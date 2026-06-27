@@ -1,0 +1,132 @@
+<section id="payment-page" class="page">
+    <!-- Page Header -->
+    <header class="page__header">
+        <h1 class="page__title">
+            <span class="page__icon">💵</span>
+            Pagar/Atualizar Despesa
+        </h1>
+        <button class="btn btn--primary" onclick="CGD.showModal('add-modal')">
+            ➕ Adicionar Despesa
+        </button>
+    </header>
+
+    <!-- Date Filters -->
+    <section class="date-selector">
+        <div class="date-selector__group">
+            <label for="pendingMonthSelect" class="date-selector__label">MÊS:</label>
+            <select id="pendingMonthSelect" class="date-selector__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Todos os meses</option>
+                <option>Janeiro</option>
+                <option>Fevereiro</option>
+                <option>Março</option>
+                <option>Abril</option>
+                <option>Maio</option>
+                <option>Junho</option>
+                <option>Julho</option>
+                <option>Agosto</option>
+                <option>Setembro</option>
+                <option>Outubro</option>
+                <option>Novembro</option>
+                <option>Dezembro</option>
+            </select>
+        </div>
+        <div class="date-selector__group">
+            <label for="pendingYearSelect" class="date-selector__label">ANO:</label>
+            <select id="pendingYearSelect" class="date-selector__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Todos os anos</option>
+                <!-- Popular com anos dos registros do database JSON -->
+            </select>
+        </div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="summary">
+        <div class="summary__card summary__card--green">
+            <div class="summary__value" id="openItemsCount">0</div>
+            <div class="summary__label">DESPESAS EM ABERTO</div>
+        </div>
+        <div class="summary__card summary__card--purple">
+            <div class="summary__value" id="overdueItemsCount">0</div>
+            <div class="summary__label">DESPESAS EM ATRASO</div>
+        </div>
+        <div class="summary__card summary__card--orange">
+            <div class="summary__value" id="totalOpenValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL EM ABERTO</div>
+        </div>
+        <div class="summary__card summary__card--red">
+            <div class="summary__value" id="totalOverdueValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL EM ATRASO</div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="filters__group">
+            <label for="pendingCategoryFilter" class="filters__label">CATEGORIA</label>
+            <select id="pendingCategoryFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Todas</option>
+                <option>Aluguel</option>
+                <option>Condomínio</option>
+                <option>Serviços</option>
+                <option>Impostos</option>
+                <option>Seguro</option>
+                <option>Compras</option>
+                <option>Empréstimo</option>
+                <option>Financiamento</option>
+                <option>Consórcio</option>
+                <option>Outra</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="pendingStatusFilter" class="filters__label">STATUS</label>
+            <select id="pendingStatusFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Todas pendentes</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="pendingResponsibleFilter" class="filters__label">RESPONSÁVEL</label>
+            <select id="pendingResponsibleFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Todos</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="pendingSortFilter" class="filters__label">ORDENAR POR</label>
+            <select id="pendingSortFilter" class="filters__input" onchange="CGD.applyPageFilters('pending')">
+                <option>Vencimento</option>
+                <option>Valor</option>
+                <option>Status</option>
+                <option>Descrição</option>
+            </select>
+        </div>
+        <div class="search__container">
+            <span class="search__icon">🔍</span>
+            <input type="text" class="search__input" id="searchPendingInput"
+                placeholder="Digite para buscar por descrição, categoria ou valor..."
+                oninput="CGD.performSearch('pending')">
+        </div>
+        <button class="btn btn--secondary" onclick="CGD.clearFilters('pending')">Limpar Filtros</button>
+    </section>
+
+    <!-- Data Table -->
+    <section class="data-table">
+        <table class="table" id="pendingExpensesTable">
+            <thead class="table__header">
+                <tr class="table__row">
+                    <th class="table__cell table__cell--header">DESCRIÇÃO</th>
+                    <th class="table__cell table__cell--header">CATEGORIA</th>
+                    <th class="table__cell table__cell--header">RESPONSÁVEL</th>
+                    <th class="table__cell table__cell--header">PARCELAS</th>
+                    <th class="table__cell table__cell--header">VALOR (R$)</th>
+                    <th class="table__cell table__cell--header">DIAS EM ATRASO</th>
+                    <th class="table__cell table__cell--header">VENCIMENTO</th>
+                    <th class="table__cell table__cell--header">STATUS</th>
+                    <th class="table__cell table__cell--header">NOVO VENCIMENTO</th>
+                    <th class="table__cell table__cell--header">AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody class="table__body" id="pendingExpensesTableBody">
+                <!-- Data populated by JS -->
+            </tbody>
+        </table>
+    </section>
+</section>

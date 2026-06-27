@@ -1,0 +1,214 @@
+<section id="dashboard-page" class="page page--active">
+    <!-- Page Header -->
+    <header class="page__header">
+        <h1 class="page__title">
+            <span class="page__icon">📊</span>
+            Visão Geral das Despesas
+        </h1>
+        <button class="btn btn--primary" onclick="CGD.showModal('add-modal')">
+            ➕ Adicionar Despesa
+        </button>
+    </header>
+
+    <!-- Date Filters -->
+    <section class="date-selector">
+        <div class="date-selector__group">
+            <label for="monthSelect" class="date-selector__label">MÊS:</label>
+            <select id="monthSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
+                <!-- Selecionar por padrão o mês atual obtido pelo sistema operacional -->
+                <option>Janeiro</option>
+                <option>Fevereiro</option>
+                <option>Março</option>
+                <option>Abril</option>
+                <option>Maio</option>
+                <option>Junho</option>
+                <option>Julho</option>
+                <option>Agosto</option>
+                <option>Setembro</option>
+                <option>Outubro</option>
+                <option>Novembro</option>
+                <option>Dezembro</option>
+            </select>
+        </div>
+        <div class="date-selector__group">
+            <label for="yearSelect" class="date-selector__label">ANO:</label>
+            <select id="yearSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
+                <!-- Selecionar por padrão o ano atual obtido pelo sistema operacional -->
+                <!-- Popular com anos dos registros do database JSON -->
+            </select>
+        </div>
+    </section>
+
+    <!-- Dashboard Charts Top -->
+    <section class="dashboard-charts-top">
+        <div class="chart chart--line">
+            <header class="chart__header">
+                <h3 class="chart__title">Evolução das Despesas Mensais ()</h3>
+            </header>
+            <div id="chartByMonthlyTrendContainer" class="chart__body">
+                <canvas id="chartMonthlyTrend"></canvas>
+            </div>
+        </div>
+
+        <div class="chart chart--doughnut">
+            <header class="chart__header">
+                <h3 class="chart__title">Distribuição por Categoria de Despesa ()</h3>
+            </header>
+            <div id="chartByCategoryContainer" class="chart__body">
+                <canvas id="chartByCategory"></canvas>
+            </div>
+        </div>
+
+        <div class="chart chart--status">
+            <header class="chart__header">
+                <h3 class="chart__title">Situação de Pagamentos de Despesas ()</h3>
+            </header>
+            <div id="chartByStatusContainer" class="chart__body">
+                <canvas id="chartByStatus"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Charts Bottom -->
+    <section class="dashboard-charts-bottom">
+        <div class="chart chart--column">
+            <header class="chart__header">
+                <h3 class="chart__title">Despesas por Responsável ()</h3>
+            </header>
+            <div id="chartByResponsibleContainer" class="chart__body">
+                <canvas id="chartByResponsible"></canvas>
+            </div>
+        </div>
+
+        <div class="chart chart--top5">
+            <header class="chart__header">
+                <h3 class="chart__title">Top 5 — Maiores Despesas ()</h3>
+            </header>
+            <div id="chartTop5Container" class="chart__body">
+                <div id="top5Body" style="padding: 4px 0; display: flex; flex-direction: column; gap: 12px;"></div>
+                <div style="padding: 10px 0 2px; border-top: 1px solid var(--color-light-gray); display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                    <span style="font-size: 12px; color: var(--color-dark-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;">Total do Top 5</span>
+                    <span id="top5Total" style="font-size: 14px; font-weight: 700; color: var(--color-primary);">R$ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart chart--calendar">
+            <header class="chart__header">
+                <h3 class="chart__title">Calendário de Vencimentos ()</h3>
+            </header>
+            <div id="chartCalendarContainer" class="chart__body" style="padding:12px;">
+                <div id="calendarGrid"></div>
+                <div class="legend" style="display:flex; gap:16px; padding:10px 0 2px; border-top:1px solid var(--color-light-gray); justify-content:center; margin-top:8px;">
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                        <div style="width:10px; height:10px; border-radius:50%; background:var(--color-success);"></div>Pago
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                        <div style="width:10px; height:10px; border-radius:50%; background:var(--color-warning);"></div>Aberto
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-dark-gray); font-weight:500;">
+                        <div style="width:10px; height:10px; border-radius:50%; background:var(--color-danger);"></div>Vencido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="summary">
+        <div class="summary__card summary__card--blue">
+            <div class="summary__value" id="totalMonthValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL DO MÊS</div>
+        </div>
+        <div class="summary__card summary__card--green">
+            <div class="summary__value" id="paidValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL PAGO</div>
+        </div>
+        <div class="summary__card summary__card--orange">
+            <div class="summary__value" id="openValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL EM ABERTO</div>
+        </div>
+        <div class="summary__card summary__card--red">
+            <div class="summary__value" id="overdueValue">R$ 0,00</div>
+            <div class="summary__label">TOTAL EM ATRASO</div>
+        </div>
+    </section>
+
+    <!-- Data Filters -->
+    <section class="filters">
+        <div class="filters__group">
+            <label for="categoryFilter" class="filters__label">CATEGORIA</label>
+            <select id="categoryFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
+                <option>Todas</option>
+                <option>Aluguel</option>
+                <option>Condomínio</option>
+                <option>Serviços</option>
+                <option>Impostos</option>
+                <option>Seguro</option>
+                <option>Compras</option>
+                <option>Empréstimo</option>
+                <option>Financiamento</option>
+                <option>Consórcio</option>
+                <option>Outra</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="statusFilter" class="filters__label">STATUS</label>
+            <select id="statusFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
+                <option>Todos</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="responsibleFilter" class="filters__label">RESPONSÁVEL</label>
+            <select id="responsibleFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
+                <option>Todos</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="sortFilter" class="filters__label">ORDENAR POR</label>
+            <select id="sortFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
+                <option>Vencimento</option>
+                <option>Valor</option>
+                <option>Status</option>
+                <option>Descrição</option>
+            </select>
+        </div>
+        <div class="filters__group">
+            <label for="paymentMethodFilter" class="filters__label">FORMA DE PAGAMENTO</label>
+            <select id="paymentMethodFilter" class="filters__input" onchange="CGD.applyPageFilters('dashboard')">
+                <option value="Todos">Todos</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Cartão (débito)">Cartão (débito)</option>
+                <option value="Cartão (crédito)">Cartão (crédito)</option>
+                <option value="PIX (débito)">PIX (débito)</option>
+                <option value="PIX (crédito)">PIX (crédito)</option>
+                <option value="Débito automático">Débito automático</option>
+            </select>
+        </div>
+        <button class="btn btn--secondary" onclick="CGD.clearFilters('dashboard')">Limpar Filtros</button>
+    </section>
+
+    <!-- Data Table -->
+    <section class="data-table">
+        <table class="table" id="expensesTable">
+            <thead class="table__header">
+                <tr class="table__row">
+                    <th class="table__cell table__cell--header">DESCRIÇÃO</th>
+                    <th class="table__cell table__cell--header">CATEGORIA</th>
+                    <th class="table__cell table__cell--header">RESPONSÁVEL</th>
+                    <th class="table__cell table__cell--header">PARCELAS</th>
+                    <th class="table__cell table__cell--header">VALOR (R$)</th>
+                    <th class="table__cell table__cell--header">FORMA DE PAGAMENTO</th>
+                    <th class="table__cell table__cell--header">VENCIMENTO</th>
+                    <th class="table__cell table__cell--header">STATUS</th>
+                    <th class="table__cell table__cell--header">NOVO VENCIMENTO</th>
+                    <th class="table__cell table__cell--header">AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody class="table__body" id="expensesTableBody">
+                <!-- Popular com despesas dos registros do database JSON -->
+            </tbody>
+        </table>
+    </section>
+</section>

@@ -1,0 +1,174 @@
+<section id="backup-page" class="page">
+    <!-- Page Header -->
+    <header class="page__header">
+        <h1 class="page__title">
+            <span class="page__icon">💾</span>
+            Exportar/Importar Dados
+        </h1>
+        <button class="btn btn--primary" onclick="CGD.navigateTo('dashboard-page')">
+            📊 Voltar ao Dashboard
+        </button>
+    </header>
+
+    <!-- Informações Gerais -->
+    <section class="info-card">
+        <header class="info-card__header">
+            <span class="info-card__icon">💡</span>
+            <h3 class="info-card__title">Backup de Dados</h3>
+        </header>
+        <div class="info-card__content">
+            <p>Mantenha seus dados seguros fazendo backups regulares. Você pode exportar seus dados em
+                diferentes formatos e importá-los quando necessário.</p>
+            <br>
+            <strong>Formatos disponíveis:</strong>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+                <li><strong>JSON:</strong> Backup completo com toda a estrutura de dados (recomendado)</li>
+                <li><strong>CSV:</strong> Formato compatível com planilhas como Excel e Google Sheets</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Estatísticas dos Dados -->
+    <section class="summary">
+        <div class="summary__card summary__card--blue">
+            <div class="summary__value" id="totalValueSum">R$ 0,00</div>
+            <div class="summary__label">Valor Total</div>
+        </div>
+        <div class="summary__card summary__card--gray">
+            <div class="summary__value" id="totalExpensesCount">0</div>
+            <div class="summary__label">Total de Despesas</div>
+        </div>
+        <div class="summary__card summary__card--green">
+            <div class="summary__value" id="totalPaidCount">0</div>
+            <div class="summary__label">Despesas Pagas</div>
+        </div>
+        <div class="summary__card summary__card--orange">
+            <div class="summary__value" id="totalOpenCount">0</div>
+            <div class="summary__label">Despesas Pendentes</div>
+        </div>
+    </section>
+
+    <!-- Seções de Backup -->
+    <section class="backup-sections">
+        <!-- Seção de Exportação -->
+        <div class="backup-section backup-section--export">
+            <header class="backup-section__header">
+                <span class="backup-section__icon">📤</span>
+                <h2 class="backup-section__title">Exportar Dados</h2>
+            </header>
+
+            <p class="backup-section__description">
+                Faça o download de seus dados em diferentes formatos para backup ou análise externa.
+            </p>
+
+            <form class="form" id="exportForm">
+                <!-- Formato de Exportação -->
+                <div class="form__group">
+                    <label class="form__label">Formato de Exportação</label>
+                    <div class="format-options">
+                        <div class="format-option selected" data-format="json"
+                            onclick="CGD.selectFormat('export', 'json')">
+                            <div class="format-option__icon">📄</div>
+                            <div class="format-option__name">JSON</div>
+                            <div class="format-option__description">Backup completo</div>
+                        </div>
+                        <div class="format-option" data-format="csv" onclick="CGD.selectFormat('export', 'csv')">
+                            <div class="format-option__icon">📊</div>
+                            <div class="format-option__name">CSV</div>
+                            <div class="format-option__description">Para planilhas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nome do Arquivo -->
+                <div class="form__group">
+                    <label for="exportFileName" class="form__label">Nome do Arquivo</label>
+                    <input type="text" id="exportFileName" name="exportFileName" class="form__input"
+                        value="cgd-backup-2025_08_21-22_08_27.json"
+                        placeholder="Nome do arquivo (sem extensão)">
+                </div>
+
+                <!-- Botão de Exportação -->
+                <button type="button" class="btn btn--backup" onclick="CGD.performExport()">
+                    📤 Exportar Dados
+                </button>
+            </form>
+        </div>
+
+        <!-- Seção de Importação -->
+        <div class="backup-section backup-section--import">
+            <header class="backup-section__header">
+                <span class="backup-section__icon">📥</span>
+                <h2 class="backup-section__title">Importar Dados</h2>
+            </header>
+
+            <p class="backup-section__description">
+                Restaure seus dados a partir de um arquivo de backup JSON ou CSV.
+            </p>
+
+            <form class="form" id="importForm">
+                <!-- Formato de Importação -->
+                <div class="form__group">
+                    <label class="form__label">Formato de Importação</label>
+                    <div class="format-options">
+                        <div class="format-option selected" data-format="json"
+                            onclick="CGD.selectFormat('import', 'json')">
+                            <div class="format-option__icon">📄</div>
+                            <div class="format-option__name">JSON</div>
+                            <div class="format-option__description">Backup completo</div>
+                        </div>
+                        <!--
+                        <div class="format-option" data-format="csv" onclick="CGD.selectFormat('import', 'csv')">
+                            <div class="format-option__icon">📊</div>
+                            <div class="format-option__name">CSV</div>
+                            <div class="format-option__description">Dados de planilha</div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+
+                <!-- Seleção do Arquivo -->
+                <div class="form__group">
+                    <label for="importFile" class="form__label">Selecionar Arquivo</label>
+                    <input type="file" id="importFile" name="importFile" class="form__input form__input--file"
+                        accept=".json,.csv" onchange="CGD.validateImportFile()">
+                </div>
+
+                <!-- Opções de Importação -->
+                <div class="form__group">
+                    <label class="form__label">Modo de Importação</label>
+                    <div class="format-options">
+                        <div class="format-option selected" data-mode="replace"
+                            onclick="CGD.selectImportMode('replace')">
+                            <div class="format-option__icon">🔄</div>
+                            <div class="format-option__name">Substituir</div>
+                            <div class="format-option__description">Apagar dados atuais</div>
+                        </div>
+                        <div class="format-option" data-mode="merge" onclick="CGD.selectImportMode('merge')">
+                            <div class="format-option__icon">➕</div>
+                            <div class="format-option__name">Mesclar</div>
+                            <div class="format-option__description">Adicionar aos dados</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aviso de Importação -->
+                <div class="warning-card">
+                    <header class="warning-card__header">
+                        <span class="warning-card__icon">⚠️</span>
+                        <span class="warning-card__title">Atenção:</span>
+                    </header>
+                    <div class="warning-card__content">
+                        No modo "Substituir", todos os dados atuais serão perdidos. Certifique-se de fazer um
+                        backup antes de continuar.
+                    </div>
+                </div>
+
+                <!-- Botão de Importação -->
+                <button type="button" class="btn btn--restore" onclick="CGD.showModal('restore-modal')">
+                    📥 Importar Dados
+                </button>
+            </form>
+        </div>
+    </section>
+</section>

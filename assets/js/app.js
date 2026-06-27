@@ -10,6 +10,8 @@ import { validateForm }                                      from './utils/valid
 import { navigateTo, showModal, closeModal,
          toggleTheme, refreshCurrentPage, confirmExit }      from './components/sidebar.js';
 
+import { registerPage }                                      from './core/router.js';
+
 import { setCurrentDate, populateFilters, populateYearSelect,
          updateSummary, renderTable, clearFilters,
          applyPageFilters, updateDateFilter, performSearch,
@@ -28,7 +30,7 @@ import { selectFormat, selectImportMode, performExport,
          performImport, generateDefaultBackupFileName,
          resetBackupForms }                                  from './pages/backup.js';
 
-// ── Configurações de validação (definidas aqui pois dependem de expenseIdToUpdate) ──
+// ── Configurações de validação ─────────────────────────────────────────────────
 
 function buildValidationConfigs() {
     return {
@@ -60,7 +62,6 @@ function buildValidationConfigs() {
             ],
             customValidations: [
                 () => {
-                    // expenseIdToUpdate é lido dinamicamente do state
                     const { expenseIdToUpdate: id } = window._cgdState || {};
                     const expense = expenses.find(e => e.id === id);
                     if (!expense) return { valid: false, message: 'Despesa não encontrada' };
@@ -87,7 +88,53 @@ function buildValidationConfigs() {
     };
 }
 
-// ── Inicialização ─────────────────────────────────────────────────────────────
+// ── Registro das páginas no router ────────────────────────────────────────────
+
+function registerAllPages() {
+    // Dashboard
+    registerPage('dashboard-page', () => {
+        setCurrentDate();
+        populateFilters();
+        setupAllFiltersListeners();
+        updateSummary('dashboard');
+        renderTable('dashboard');
+        checkOverdueExpenses();
+    });
+
+    // Editar/Remover
+    registerPage('edit-page', () => {
+        populateFilters();
+        setupAllFiltersListeners();
+        clearFilters('edit');
+        updateSummary('edit');
+        renderTable('edit');
+    });
+
+    // Pagar/Atualizar
+    registerPage('payment-page', () => {
+        populateFilters();
+        setupAllFiltersListeners();
+        clearFilters('pending');
+        updateSummary('pending');
+        renderTable('pending');
+    });
+
+    // Backup
+    registerPage('backup-page', () => {
+        updateSummary('backup');
+        resetBackupForms();
+        selectFormat('export', 'json');
+        generateDefaultBackupFileName();
+        selectFormat('import', 'json');
+        selectImportMode('replace');
+    });
+
+    // Relatórios e Sobre — sem inicializador JS (conteúdo estático)
+    // registerPage('report-page', () => {});
+    // registerPage('info-page',   () => {});
+}
+
+// ── Listeners dos filtros ─────────────────────────────────────────────────────
 
 function setupAllFiltersListeners() {
     const editFilters = [
@@ -120,7 +167,6 @@ function setupModalListeners() {
     ['editExpenseValue', 'editExpenseInstallments'].forEach(id => {
         const input = document.getElementById(id);
         if (input) input.addEventListener('input', () => {
-            const { expenseIdToEdit } = import('./core/state.js');
             const exp = expenses.find(e => e.id === window._cgdState?.expenseIdToEdit);
             if (exp) setTimeout(() => generateInstallmentsTable('edit', { expense: exp }), 50);
         });
@@ -155,6 +201,8 @@ function setupDateInputsValidation() {
     document.addEventListener('paste',    e => { if (e.target.matches("input[type='date']")) e.preventDefault(); });
 }
 
+// ── Inicialização ─────────────────────────────────────────────────────────────
+
 function initializeSystem() {
     // Expõe estado para customValidations que precisam de IDs
     import('./core/state.js').then(state => { window._cgdState = state; });
@@ -167,16 +215,33 @@ function initializeSystem() {
     const wasMigrated = migrateExpensesIfNeeded();
     if (wasMigrated) saveExpensesToStorage();
 
-    setCurrentDate();
-    populateFilters();
-    setupAllFiltersListeners();
+    // Aplica tema salvo antes de qualquer renderização
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        const toggle = document.getElementById('themeToggle');
+        const modeText = document.getElementById('modeText');
+        if (toggle) toggle.classList.add('dark');
+        if (modeText) modeText.textContent = '🌙 Modo Escuro';
+    }
+
     setupDateInputsValidation();
     setupModalListeners();
-    updateSummary('dashboard');
-    renderTable('dashboard');
-    checkOverdueExpenses();
 
-    if (expenses.length === 0) showModal('welcomeModal');
+    // Registra todas as páginas no router
+    registerAllPages();
+
+    // Carrega o dashboard como página inicial
+    navigateTo('dashboard-page');
+
+    // Mostra o modal de boas-vindas se não há dados
+    if (expenses.length === 0) {
+        // Aguarda o DOM da página ser injetado pelo router antes de abrir o modal
+        setTimeout(() => showModal('welcomeModal'), 300);
+    }
+
+    // Checagem periódica de vencimentos (a cada 3s)
+    setInterval(() => checkOverdueExpenses(), 3000);
 }
 
 document.addEventListener('DOMContentLoaded', initializeSystem);
@@ -228,4 +293,4 @@ window.CGD = {
     resetBackupForms
 };
 
-console.log('🎯 CGD — Sistema de Controle de Gastos Domésticos carregado com sucesso! (Módulos ES6)');
+console.log('🎯 CGD — Sistema de Controle de Gastos Domésticos carregado com sucesso! (Módulos ES6 + Router)');
