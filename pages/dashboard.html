@@ -14,7 +14,7 @@
     <section class="date-selector">
         <div class="date-selector__group">
             <label for="monthSelect" class="date-selector__label">MÊS:</label>
-            <select id="monthSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
+            <select id="monthSelect" class="date-selector__input" onchange="CGD.updateDateFilter()">
                 <!-- Selecionar por padrão o mês atual obtido pelo sistema operacional -->
                 <option>Janeiro</option>
                 <option>Fevereiro</option>
@@ -32,7 +32,7 @@
         </div>
         <div class="date-selector__group">
             <label for="yearSelect" class="date-selector__label">ANO:</label>
-            <select id="yearSelect" class="date-selector__input" onchange="CGD.updateDateFilter(">
+            <select id="yearSelect" class="date-selector__input" onchange="CGD.updateDateFilter()">
                 <!-- Selecionar por padrão o ano atual obtido pelo sistema operacional -->
                 <!-- Popular com anos dos registros do database JSON -->
             </select>

@@ -48,6 +48,15 @@ export async function navigateTo(pageId) {
         }
         const html = await response.text();
         container.innerHTML = html;
+
+        // Garante que a section injetada tenha a classe de visibilidade ativa.
+        // Necessário porque apenas o dashboard.html já nasce com page--active;
+        // os demais arquivos em pages/*.html têm somente a classe base "page"
+        // (display:none no CSS) e precisam receber page--active após a injeção.
+        const injectedPage = container.querySelector('.page');
+        if (injectedPage && !injectedPage.classList.contains('page--active')) {
+            injectedPage.classList.add('page--active');
+        }
     } catch (err) {
         console.error(`[Router] Erro ao carregar página "${pageName}":`, err);
         container.innerHTML = `

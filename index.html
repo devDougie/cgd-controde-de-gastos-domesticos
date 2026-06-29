@@ -27,12 +27,17 @@
             color: var(--color-dark-gray, #666);
             opacity: 0.6;
         }
+
         .page-error {
             padding: 2rem;
             color: var(--color-danger, #e74c3c);
             line-height: 1.7;
         }
-        .page-error p { margin-bottom: 0.75rem; }
+
+        .page-error p {
+            margin-bottom: 0.75rem;
+        }
+
         .page-error code {
             background: var(--color-light-gray, #f0f0f0);
             padding: 2px 6px;
@@ -158,9 +163,6 @@
     <!-- Main Content Area -->
     <main class="main-content" id="mainContent">
 
-    <!-- Main Content Area -->
-    <main class="main-content" id="mainContent">
-
         <!-- ===== CONTAINER DE PÁGINAS (carregadas dinamicamente pelo router) ===== -->
         <div id="page-container">
             <!-- As páginas são carregadas aqui via fetch pelo core/router.js -->
@@ -273,16 +275,14 @@
                             <label for="expenseDescription"
                                 class="form__label form__label--required">Nome/Descrição</label>
                             <input type="text" id="expenseDescription" name="descricao" class="form__input" required
-                                placeholder="Ex: Conta de luz (fatura de Maio)..."
-                                oninput="">
+                                placeholder="Ex: Conta de luz (fatura de Maio)..." oninput="">
                         </div>
 
                         <!-- Category and Responsible -->
                         <div class="form__row">
                             <div class="form__group">
                                 <label for="expenseCategory" class="form__label form__label--required">Categoria</label>
-                                <select id="expenseCategory" name="categoria" class="form__input" required
-                                    onchange="">
+                                <select id="expenseCategory" name="categoria" class="form__input" required onchange="">
                                     <option value="">Escolha...</option>
                                     <option value="Aluguel">Aluguel</option>
                                     <option value="Condomínio">Condomínio</option>
@@ -300,17 +300,18 @@
                                 <label for="expenseResponsible"
                                     class="form__label form__label--required">Responsável</label>
                                 <input type="text" id="expenseResponsible" name="responsavel" class="form__input"
-                                    required placeholder="Ex: João, Maria, Coletiva..."
-                                    oninput="">
+                                    required placeholder="Ex: João, Maria, Coletiva..." oninput="">
                             </div>
                         </div>
 
                         <!-- Value and Installments -->
                         <div class="form__row">
                             <div class="form__group">
-                                <label for="expenseValue" class="form__label form__label--required">Valor (R$)</label>
+                                <label for="expenseValue" class="form__label form__label--required">Valor
+                                    (R$)</label>
                                 <input type="number" id="expenseValue" name="valorTotal" class="form__input" step="0.01"
-                                    min="0.01" required placeholder="0,00" oninput="CGD.generateInstallmentsTable('add')">
+                                    min="0.01" required placeholder="0,00"
+                                    oninput="CGD.generateInstallmentsTable('add')">
                             </div>
                             <div class="form__group">
                                 <label for="expenseInstallments" class="form__label form__label--required">Total de
@@ -422,7 +423,8 @@
                                     oninput="CGD.generateInstallmentsTable('edit', { expense: despesaSelecionada })">
                             </div>
                             <div class="form__group">
-                                <label for="editExpenseInstallments" class="form__label form__label--required">Total de
+                                <label for="editExpenseInstallments" class="form__label form__label--required">Total
+                                    de
                                     Parcelas</label>
                                 <input type="number" id="editExpenseInstallments" name="totalParcelas"
                                     class="form__input" min="1" max="100" value="1" required
@@ -725,7 +727,8 @@
                     <p class="confirmation__question">Você está prestes a restaurar um backup.</p>
 
                     <p class="restore-warning">
-                        Esta operação pode <strong class="text--danger">alterar ou substituir permanentemente</strong>
+                        Esta operação pode <strong class="text--danger">alterar ou substituir
+                            permanentemente</strong>
                         os dados atuais do sistema dependendo das opções escolhidas.
                     </p>
 
@@ -735,7 +738,8 @@
                             <strong>Recomendação:</strong>
                         </header>
                         <div class="recommendation__text">
-                            Faça um backup dos seus dados atuais antes de prosseguir para evitar perda irreversível de
+                            Faça um backup dos seus dados atuais antes de prosseguir para evitar perda irreversível
+                            de
                             informações.
                         </div>
                     </div>
@@ -784,8 +788,8 @@
                 </footer>
             </div>
         </div>
+    </main>
 
-        <!-- ===== SCRIPTS ===== -->
-        <script type="module" src="assets/js/app.js"></script>
+    <!-- ===== SCRIPTS ===== -->
+    <script type="module" src="assets/js/app.js"></script>
 </body>
-

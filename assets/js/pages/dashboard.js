@@ -9,13 +9,13 @@ import { renderCharts } from '../components/charts.js';
 // ── Filtros ───────────────────────────────────────────────────────────────────
 
 export function setCurrentDate() {
-    const now          = new Date();
+    const now = new Date();
     const currentMonth = now.getMonth();
-    const currentYear  = now.getFullYear();
+    const currentYear = now.getFullYear();
 
     const monthSelect = document.getElementById('monthSelect');
-    monthSelect.selectedIndex     = currentMonth;
-    currentFilters.month          = currentMonth + 1;
+    monthSelect.selectedIndex = currentMonth;
+    currentFilters.month = currentMonth + 1;
 
     populateYearSelect(currentYear);
     currentFilters.year = currentYear;
@@ -36,7 +36,7 @@ export function populateYearSelect(currentYear) {
 
     years.forEach(year => {
         const option = document.createElement('option');
-        option.value    = year;
+        option.value = year;
         option.textContent = year;
         if (year === currentYear) option.selected = true;
         yearSelect.appendChild(option);
@@ -44,15 +44,15 @@ export function populateYearSelect(currentYear) {
 }
 
 export function populateFilters() {
-    populateFilter('responsibleFilter',      'responsible');
-    populateFilter('statusFilter',           'status');
-    populateFilter('editYearSelect',         'year');
-    populateFilter('editStatusFilter',       'status', 'edit');
-    populateFilter('editResponsibleFilter',  'responsible');
-    populateFilter('pendingYearSelect',      'year');
-    populateFilter('pendingStatusFilter',    'status', 'pending');
-    populateFilter('pendingResponsibleFilter','responsible', 'pending');
-    populateFilter('reportResponsibleFilter','responsible');
+    populateFilter('responsibleFilter', 'responsible');
+    populateFilter('statusFilter', 'status');
+    populateFilter('editYearSelect', 'year');
+    populateFilter('editStatusFilter', 'status', 'edit');
+    populateFilter('editResponsibleFilter', 'responsible');
+    populateFilter('pendingYearSelect', 'year');
+    populateFilter('pendingStatusFilter', 'status', 'pending');
+    populateFilter('pendingResponsibleFilter', 'responsible', 'pending');
+    populateFilter('reportResponsibleFilter', 'responsible');
 }
 
 export function populateFilter(filterId, filterType, page = null) {
@@ -120,19 +120,19 @@ export function populateFilter(filterId, filterType, page = null) {
 
 export function updateDateFilter() {
     const monthSelect = document.getElementById('monthSelect');
-    const yearSelect  = document.getElementById('yearSelect');
+    const yearSelect = document.getElementById('yearSelect');
     currentFilters.month = monthSelect.selectedIndex + 1;
-    currentFilters.year  = parseInt(yearSelect.value);
+    currentFilters.year = parseInt(yearSelect.value);
     updateSummary('dashboard');
     renderTable('dashboard');
 }
 
 export function applyPageFilters(pageType) {
     if (pageType === 'dashboard') {
-        currentFilters.category      = document.getElementById('categoryFilter').value;
-        currentFilters.status        = document.getElementById('statusFilter').value;
-        currentFilters.responsible   = document.getElementById('responsibleFilter').value;
-        currentFilters.sort          = document.getElementById('sortFilter').value;
+        currentFilters.category = document.getElementById('categoryFilter').value;
+        currentFilters.status = document.getElementById('statusFilter').value;
+        currentFilters.responsible = document.getElementById('responsibleFilter').value;
+        currentFilters.sort = document.getElementById('sortFilter').value;
         const pmEl = document.getElementById('paymentMethodFilter');
         currentFilters.paymentMethod = pmEl ? pmEl.value : 'Todos';
         renderTable('dashboard');
@@ -148,38 +148,38 @@ export function applyPageFilters(pageType) {
 export function clearFilters(pageType) {
     if (pageType === 'dashboard') {
         setCurrentDate();
-        document.getElementById('categoryFilter').value      = 'Todas';
-        document.getElementById('statusFilter').value        = 'Todos';
-        document.getElementById('responsibleFilter').value   = 'Todos';
-        document.getElementById('sortFilter').value          = 'Vencimento';
+        document.getElementById('categoryFilter').value = 'Todas';
+        document.getElementById('statusFilter').value = 'Todos';
+        document.getElementById('responsibleFilter').value = 'Todos';
+        document.getElementById('sortFilter').value = 'Vencimento';
         document.getElementById('paymentMethodFilter').value = 'Todos';
 
-        currentFilters.category      = 'Todas';
-        currentFilters.status        = 'Todos';
-        currentFilters.responsible   = 'Todos';
-        currentFilters.sort          = 'Vencimento';
+        currentFilters.category = 'Todas';
+        currentFilters.status = 'Todos';
+        currentFilters.responsible = 'Todos';
+        currentFilters.sort = 'Vencimento';
         currentFilters.paymentMethod = 'Todos';
 
         updateSummary('dashboard');
         renderTable('dashboard');
     } else if (pageType === 'edit') {
-        document.getElementById('editMonthSelect').selectedIndex     = 0;
-        document.getElementById('editYearSelect').value              = 'Todos os anos';
-        document.getElementById('editCategoryFilter').value          = 'Todas';
-        document.getElementById('editStatusFilter').value            = 'Todas';
-        document.getElementById('editResponsibleFilter').value       = 'Todos';
-        document.getElementById('editSortFilter').selectedIndex      = 0;
-        document.getElementById('editPaymentMethodFilter').value     = 'Todos';
+        document.getElementById('editMonthSelect').selectedIndex = 0;
+        document.getElementById('editYearSelect').value = 'Todos os anos';
+        document.getElementById('editCategoryFilter').value = 'Todas';
+        document.getElementById('editStatusFilter').value = 'Todas';
+        document.getElementById('editResponsibleFilter').value = 'Todos';
+        document.getElementById('editSortFilter').selectedIndex = 0;
+        document.getElementById('editPaymentMethodFilter').value = 'Todos';
         const si = document.getElementById('searchEditInput');
         if (si) si.value = '';
         renderTable('edit');
         updateSummary('edit');
     } else if (pageType === 'pending') {
-        document.getElementById('pendingYearSelect').value            = 'Todos os anos';
-        document.getElementById('pendingCategoryFilter').value        = 'Todas';
-        document.getElementById('pendingStatusFilter').value          = 'Todas pendentes';
-        document.getElementById('pendingResponsibleFilter').value     = 'Todos';
-        document.getElementById('pendingSortFilter').selectedIndex    = 0;
+        document.getElementById('pendingYearSelect').value = 'Todos os anos';
+        document.getElementById('pendingCategoryFilter').value = 'Todas';
+        document.getElementById('pendingStatusFilter').value = 'Todas pendentes';
+        document.getElementById('pendingResponsibleFilter').value = 'Todos';
+        document.getElementById('pendingSortFilter').selectedIndex = 0;
         const sp = document.getElementById('searchPendingInput');
         if (sp) sp.value = '';
         renderTable('pending');
@@ -189,7 +189,7 @@ export function clearFilters(pageType) {
 
 export function performSearch(pageType) {
     const searchInputId = pageType === 'edit' ? 'searchEditInput' : 'searchPendingInput';
-    const searchValue   = document.getElementById(searchInputId).value.toLowerCase();
+    const searchValue = document.getElementById(searchInputId).value.toLowerCase();
 
     let filtered = getFilteredExpenses(pageType);
 
@@ -214,33 +214,33 @@ export function performSearch(pageType) {
 export function getFilteredExpenses(pageType, customFilters = null) {
     const filterConfigs = {
         dashboard: {
-            monthSelector:         'monthSelect',
-            yearSelector:          'yearSelect',
-            categorySelector:      'categoryFilter',
-            statusSelector:        'statusFilter',
-            responsibleSelector:   'responsibleFilter',
-            sortSelector:          'sortFilter',
+            monthSelector: 'monthSelect',
+            yearSelector: 'yearSelect',
+            categorySelector: 'categoryFilter',
+            statusSelector: 'statusFilter',
+            responsibleSelector: 'responsibleFilter',
+            sortSelector: 'sortFilter',
             paymentMethodSelector: 'paymentMethodFilter',
             useCurrentFilters: true,
             dateField: 'vencimento'
         },
         edit: {
-            monthSelector:         'editMonthSelect',
-            yearSelector:          'editYearSelect',
-            categorySelector:      'editCategoryFilter',
-            statusSelector:        'editStatusFilter',
-            responsibleSelector:   'editResponsibleFilter',
-            sortSelector:          'editSortFilter',
+            monthSelector: 'editMonthSelect',
+            yearSelector: 'editYearSelect',
+            categorySelector: 'editCategoryFilter',
+            statusSelector: 'editStatusFilter',
+            responsibleSelector: 'editResponsibleFilter',
+            sortSelector: 'editSortFilter',
             paymentMethodSelector: 'editPaymentMethodFilter',
             useCurrentFilters: false,
             dateField: 'vencimento'
         },
         pending: {
-            yearSelector:          'pendingYearSelect',
-            categorySelector:      'pendingCategoryFilter',
-            statusSelector:        'pendingStatusFilter',
-            responsibleSelector:   'pendingResponsibleFilter',
-            sortSelector:          'pendingSortFilter',
+            yearSelector: 'pendingYearSelect',
+            categorySelector: 'pendingCategoryFilter',
+            statusSelector: 'pendingStatusFilter',
+            responsibleSelector: 'pendingResponsibleFilter',
+            sortSelector: 'pendingSortFilter',
             useCurrentFilters: false,
             dateField: 'vencimento',
             onlyPending: true
@@ -292,19 +292,19 @@ export function getFilteredExpenses(pageType, customFilters = null) {
         if (!expenseDate) return false;
 
         const expenseMonth = expenseDate.getMonth() + 1;
-        const expenseYear  = expenseDate.getFullYear();
-        const status       = getExpenseStatus(expense);
+        const expenseYear = expenseDate.getFullYear();
+        const status = getExpenseStatus(expense);
 
         if (config.useCurrentFilters) {
             if (filters.month && expenseMonth !== filters.month) return false;
-            if (filters.year  && expenseYear  !== filters.year)  return false;
+            if (filters.year && expenseYear !== filters.year) return false;
         } else {
             if (filters.month > 0 && expenseMonth !== filters.month) return false;
             if (filters.year !== 'Todos os anos' && String(expenseYear) !== String(filters.year)) return false;
         }
 
-        if (filters.category    && filters.category    !== 'Todas' && expense.categoria   !== filters.category)    return false;
-        if (filters.responsible && filters.responsible !== 'Todos' && expense.responsavel  !== filters.responsible) return false;
+        if (filters.category && filters.category !== 'Todas' && expense.categoria !== filters.category) return false;
+        if (filters.responsible && filters.responsible !== 'Todos' && expense.responsavel !== filters.responsible) return false;
 
         if (config.onlyPending) {
             if (expense.pagamentoEfetuado === 'sim') return false;
@@ -321,10 +321,10 @@ export function getFilteredExpenses(pageType, customFilters = null) {
         filtered.sort((a, b) => {
             switch (filters.sort) {
                 case 'Vencimento': return parseDate(a.vencimento) - parseDate(b.vencimento);
-                case 'Valor':      return b.valorOriginal - a.valorOriginal;
-                case 'Status':     return getExpenseStatus(a).localeCompare(getExpenseStatus(b));
-                case 'Descrição':  return a.descricao.localeCompare(b.descricao);
-                default:           return 0;
+                case 'Valor': return b.valorOriginal - a.valorOriginal;
+                case 'Status': return getExpenseStatus(a).localeCompare(getExpenseStatus(b));
+                case 'Descrição': return a.descricao.localeCompare(b.descricao);
+                default: return 0;
             }
         });
     }
@@ -337,14 +337,14 @@ export function getFilteredExpenses(pageType, customFilters = null) {
 export function renderTable(pageType, filteredExpenses = null) {
     const configs = {
         dashboard: {
-            tableBodyId:  'expensesTableBody',
+            tableBodyId: 'expensesTableBody',
             sortFilterId: null,
             emptyMessage: 'Nenhuma despesa encontrada para os filtros selecionados.',
             actions: expense => `
                 <button class="btn btn--view" onclick="CGD.viewExpense(${expense.id})" title="Ver Despesa">👁️</button>`
         },
         edit: {
-            tableBodyId:  'editExpensesTableBody',
+            tableBodyId: 'editExpensesTableBody',
             sortFilterId: 'editSortFilter',
             emptyMessage: 'Nenhuma despesa encontrada para os filtros selecionados.',
             actions: expense => {
@@ -358,16 +358,16 @@ export function renderTable(pageType, filteredExpenses = null) {
             }
         },
         pending: {
-            tableBodyId:  'pendingExpensesTableBody',
+            tableBodyId: 'pendingExpensesTableBody',
             sortFilterId: 'pendingSortFilter',
             emptyMessage: 'Nenhuma despesa pendente encontrada para os filtros selecionados.',
             actions: expense => {
-                const status        = getExpenseStatus(expense);
+                const status = getExpenseStatus(expense);
                 const isTransferred = expense.transferenciaEfetuda === 'sim';
-                const isPaid        = expense.pagamentoEfetuado === 'sim';
+                const isPaid = expense.pagamentoEfetuado === 'sim';
 
-                // Pode pagar: qualquer despesa não paga e não transferida (aberta OU vencida)
-                const canPay    = !isPaid && !isTransferred;
+                // Pode pagar: apenas abertas (não vencidas), não pagas e não transferidas
+                const canPay = status === 'Aberto' && !isPaid && !isTransferred;
                 // Pode atualizar (renegociar prazo): apenas vencidas e não transferidas
                 const canUpdate = status === 'Vencido' && !isTransferred;
 
@@ -384,9 +384,9 @@ export function renderTable(pageType, filteredExpenses = null) {
         }
     };
 
-    const config    = configs[pageType];
+    const config = configs[pageType];
     const tableBody = document.getElementById(config.tableBodyId);
-    const sort      = config.sortFilterId ? document.getElementById(config.sortFilterId).value : null;
+    const sort = config.sortFilterId ? document.getElementById(config.sortFilterId).value : null;
 
     let filtered = filteredExpenses || getFilteredExpenses(pageType);
 
@@ -394,10 +394,10 @@ export function renderTable(pageType, filteredExpenses = null) {
         filtered.sort((a, b) => {
             switch (sort) {
                 case 'Vencimento': return new Date(a.vencimento) - new Date(b.vencimento);
-                case 'Valor':      return b.valorOriginal - a.valorOriginal;
-                case 'Status':     return getExpenseStatus(a).localeCompare(getExpenseStatus(b));
-                case 'Descrição':  return a.descricao.localeCompare(b.descricao);
-                default:           return 0;
+                case 'Valor': return b.valorOriginal - a.valorOriginal;
+                case 'Status': return getExpenseStatus(a).localeCompare(getExpenseStatus(b));
+                case 'Descrição': return a.descricao.localeCompare(b.descricao);
+                default: return 0;
             }
         });
     }
@@ -415,7 +415,7 @@ export function renderTable(pageType, filteredExpenses = null) {
     tableBody.innerHTML = '';
     filtered.forEach(expense => {
         const status = getExpenseStatus(expense);
-        const row    = document.createElement('tr');
+        const row = document.createElement('tr');
         row.className = 'table__row';
 
         const baseColumns = `
@@ -463,15 +463,15 @@ export function updateSummary(pageType, customFiltered = null) {
         filteredExpenses.forEach(exp => {
             totalMonth += exp.valorOriginal;
             const status = getExpenseStatus(exp);
-            if (status === 'Pago')    paid   += exp.valorOriginal;
-            else if (status === 'Aberto')  openn  += exp.valorOriginal;
+            if (status === 'Pago') paid += exp.valorOriginal;
+            else if (status === 'Aberto') openn += exp.valorOriginal;
             else if (status === 'Vencido') overdue += exp.valorOriginal;
         });
 
         document.getElementById('totalMonthValue').textContent = formatCurrency(totalMonth);
-        document.getElementById('paidValue').textContent       = formatCurrency(paid);
-        document.getElementById('openValue').textContent       = formatCurrency(openn);
-        document.getElementById('overdueValue').textContent    = formatCurrency(overdue);
+        document.getElementById('paidValue').textContent = formatCurrency(paid);
+        document.getElementById('openValue').textContent = formatCurrency(openn);
+        document.getElementById('overdueValue').textContent = formatCurrency(overdue);
 
         const yearlyExpenses = expenses.filter(exp => {
             const d = parseDate(exp.vencimento);
@@ -481,7 +481,7 @@ export function updateSummary(pageType, customFiltered = null) {
         renderCharts(filteredExpenses, yearlyExpenses);
 
     } else if (pageType === 'edit') {
-        const filtered       = customFiltered || getFilteredExpenses('edit');
+        const filtered = customFiltered || getFilteredExpenses('edit');
         const filteredNoTransf = filtered.filter(e => e.transferenciaEfetuda !== 'sim');
         let paidCount = 0, notPaidCount = 0, totalValue = 0;
 
@@ -492,38 +492,38 @@ export function updateSummary(pageType, customFiltered = null) {
         });
 
         document.getElementById('totalFilteredValue').textContent = formatCurrency(totalValue);
-        document.getElementById('itemsFoundValue').textContent    = filteredNoTransf.length;
-        document.getElementById('paidItemsValue').textContent     = paidCount;
-        document.getElementById('openItemsValue').textContent     = notPaidCount;
+        document.getElementById('itemsFoundValue').textContent = filteredNoTransf.length;
+        document.getElementById('paidItemsValue').textContent = paidCount;
+        document.getElementById('openItemsValue').textContent = notPaidCount;
 
     } else if (pageType === 'pending') {
-        const filtered         = customFiltered || getFilteredExpenses('pending');
+        const filtered = customFiltered || getFilteredExpenses('pending');
         const filteredNoTransf = filtered.filter(e => e.transferenciaEfetuda !== 'sim');
         let totalPending = 0, totalOpen = 0, totalOverdue = 0, countOpen = 0, countOverdue = 0;
 
         filteredNoTransf.forEach(exp => {
             totalPending += exp.valorOriginal;
             const status = getExpenseStatus(exp);
-            if (status === 'Aberto')  { totalOpen    += exp.valorOriginal; countOpen++; }
+            if (status === 'Aberto') { totalOpen += exp.valorOriginal; countOpen++; }
             else if (status === 'Vencido') { totalOverdue += exp.valorOriginal; countOverdue++; }
         });
 
-        document.getElementById('openItemsCount').textContent   = countOpen;
-        document.getElementById('totalOpenValue').textContent   = formatCurrency(totalOpen);
+        document.getElementById('openItemsCount').textContent = countOpen;
+        document.getElementById('totalOpenValue').textContent = formatCurrency(totalOpen);
         document.getElementById('totalOverdueValue').textContent = formatCurrency(totalOverdue);
         document.getElementById('overdueItemsCount').textContent = countOverdue;
 
     } else if (pageType === 'backup') {
         const notTransferred = expenses.filter(e => e.transferenciaEfetuda !== 'sim');
-        const totalValue     = notTransferred.reduce((sum, exp) => sum + exp.valorOriginal, 0);
-        const total  = notTransferred.length;
-        const paid   = notTransferred.filter(exp => exp.pagamentoEfetuado === 'sim').length;
-        const open   = notTransferred.filter(exp => { const s = getExpenseStatus(exp); return s === 'Aberto' || s === 'Vencido'; }).length;
+        const totalValue = notTransferred.reduce((sum, exp) => sum + exp.valorOriginal, 0);
+        const total = notTransferred.length;
+        const paid = notTransferred.filter(exp => exp.pagamentoEfetuado === 'sim').length;
+        const open = notTransferred.filter(exp => { const s = getExpenseStatus(exp); return s === 'Aberto' || s === 'Vencido'; }).length;
 
         document.getElementById('totalExpensesCount').textContent = total;
-        document.getElementById('totalPaidCount').textContent     = paid;
-        document.getElementById('totalOpenCount').textContent     = open;
-        document.getElementById('totalValueSum').textContent      = formatCurrency(totalValue);
+        document.getElementById('totalPaidCount').textContent = paid;
+        document.getElementById('totalOpenCount').textContent = open;
+        document.getElementById('totalValueSum').textContent = formatCurrency(totalValue);
     }
 }
 
@@ -543,23 +543,23 @@ export function checkOverdueExpenses() {
     }).length;
 
     const notificationItem = document.getElementById('notification-item');
-    const iconSpan         = notificationItem?.querySelector('.nav__icon');
-    const alertLine2       = notificationItem?.querySelector('.nav__alert-line2');
+    const iconSpan = notificationItem?.querySelector('.nav__icon');
+    const alertLine2 = notificationItem?.querySelector('.nav__alert-line2');
 
     if (overdueCount > 0) {
         notificationItem?.classList.add('nav__item--alert');
         notificationItem?.setAttribute('onclick', "CGD.navigateTo('payment-page')");
-        if (iconSpan)   iconSpan.textContent = `⚠️ (${overdueCount})`;
+        if (iconSpan) iconSpan.textContent = `⚠️ (${overdueCount})`;
         if (alertLine2) {
             alertLine2.style.display = 'block';
-            alertLine2.textContent   = overdueCount > 1
+            alertLine2.textContent = overdueCount > 1
                 ? `Você tem ${overdueCount} despesas atrasadas!`
                 : 'Você tem despesas atrasadas!';
         }
     } else {
         notificationItem?.classList.remove('nav__item--alert');
         notificationItem?.removeAttribute('onclick');
-        if (iconSpan)   iconSpan.textContent   = '⚠️';
+        if (iconSpan) iconSpan.textContent = '⚠️';
         if (alertLine2) alertLine2.style.display = 'none';
     }
 
