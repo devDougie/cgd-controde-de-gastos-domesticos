@@ -2,6 +2,21 @@
 
 > Projeto de aprendizado e portfólio — aplicação web para controle de despesas domésticas, construída com HTML5, CSS3 e JavaScript ES6+ puro (sem framework).
 
+<div align="center">
+<img src="https://github.com/user-attachments/assets/90112b01-9395-42e1-a5a3-ce65bafd86da">
+</div>
+<br>
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/126bb457-a1df-431b-b8c1-597e0ed77ace">
+</div>
+<br>
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/b080050e-c0d0-4482-83d5-c8b712239c26">
+</div>
+<br>
+
 Este projeto foi desenvolvido com o objetivo de praticar organização e refatoração de uma aplicação frontend em um contexto realista: uma SPA de controle de gastos domésticos com parcelamento, dashboard com gráficos, backup de dados e navegação via router client-side, evoluindo de uma estrutura monolítica para uma arquitetura modular por responsabilidade.
 
 **Não se trata de um sistema pronto para produção**, mas de um projeto estruturado para aprendizado e portfólio.
